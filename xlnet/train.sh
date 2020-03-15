@@ -1,0 +1,20 @@
+python run_classifier.py \
+  --do_train=True \
+  --do_eval=False \
+  --task_name=pdtb \
+  --data_dir=../data/PDTB-3.0 \
+  --output_dir=proc_data/pdtb \
+  --model_dir=exp/pdtb \
+  --uncased=False \
+  --spiece_model_file=xlnet_cased_L-24_H-1024_A-16/spiece.model \
+  --model_config_path=xlnet_cased_L-24_H-1024_A-16/model_config.json \
+  --init_checkpoint=xlnet_cased_L-24_H-1024_A-16/xlnet_model.ckpt \
+  --max_seq_length=128 \
+  --train_batch_size=8 \
+  --num_hosts=1 \
+  --num_core_per_host=4 \
+  --learning_rate=2e-5 \
+  --train_steps=4000 \
+  --warmup_steps=500 \
+  --save_steps=500 \
+  --iterations=500
