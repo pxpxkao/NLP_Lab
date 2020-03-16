@@ -1,4 +1,4 @@
-python run_classifier.py \
+python3.6 run_classifier.py \
   --do_train=True \
   --do_eval=True \
   --task_name=pdtb \
