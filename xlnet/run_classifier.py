@@ -219,7 +219,7 @@ class PDTBProcessor(DataProcessor):
         reader = csv.reader(f, delimiter=';')
         for i, line in enumerate(reader):
           if i == 0: continue
-          if set_type === "test":
+          if set_type == "test":
             label = self.get_labels()[0]
           else:
             label = line[3]
