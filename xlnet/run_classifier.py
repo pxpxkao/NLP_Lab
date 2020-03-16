@@ -194,26 +194,26 @@ class DataProcessor(object):
       return lines
 
 class PDTBProcessor(DataProcessor):
-  def get_train_examples(self):
+  def get_train_examples(self, data_dir):
     train_sections = ['{:02}'.format(section_num) for section_num in PathConfig.train_sections]
-    return self._create_examples(train_sections, "train")
+    return self._create_examples(train_sections, "train", data_dir)
 
-  def get_dev_examples(self):
+  def get_dev_examples(self, data_dir):
     dev_sections = ['{:02}'.format(section_num) for section_num in PathConfig.dev_sections]
-    return self._create_examples(dev_sections, "dev")
+    return self._create_examples(dev_sections, "dev", data_dir)
   
-  def get_test_examples(self):
+  def get_test_examples(self, data_dir):
     test_sections = ['{:02}'.format(section_num) for section_num in PathConfig.test_sections]
-    return self._create_examples(test_sections, "test")
+    return self._create_examples(test_sections, "test", data_dir)
 
   def get_labels(self):
     """See base class."""
     return ["0", "1", "2"]
 
-  def _create_examples(self, sections, set_type):
+  def _create_examples(self, sections, set_type, data_dir):
     """Creates examples for the training and dev sets."""
     examples = []
-    instances = pdtb_preprocess(sections)
+    instances = pdtb_preprocess(sections, data_dir)
     for idx, instance in enumerate(instances):
       if set_type == "test":
         label = self.get_labels()[0]

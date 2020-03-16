@@ -2,12 +2,12 @@ import os
 from pdtb.config import PathConfig
 from pdtb.dataset import load_pipe_file
 
-def pdtb_preprocess(sections):
+def pdtb_preprocess(sections, data_dir):
     # sections = os.listdir(PathConfig.gold_data_dir)
     instances = []
     for section in sections:
-        raw_sec_dir = os.path.join(PathConfig.raw_data_dir, section)
-        gold_sec_dir = os.path.join(PathConfig.gold_data_dir, section)
+        raw_sec_dir = os.path.join(data_dir, PathConfig.raw_data_dir, section)
+        gold_sec_dir = os.path.join(data_dir, PathConfig.gold_data_dir, section)
         if not os.path.isdir(gold_sec_dir):
             continue
         # print(os.listdir(gold_sec_dir))
