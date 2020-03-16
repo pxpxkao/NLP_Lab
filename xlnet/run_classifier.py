@@ -196,31 +196,44 @@ class DataProcessor(object):
 class PDTBProcessor(DataProcessor):
   def get_train_examples(self, data_dir):
     train_sections = ['{:02}'.format(section_num) for section_num in PathConfig.train_sections]
-    return self._create_examples(train_sections, "train", data_dir)
+    return self._create_examples(data_dir, train_sections, "train")
 
   def get_dev_examples(self, data_dir):
     dev_sections = ['{:02}'.format(section_num) for section_num in PathConfig.dev_sections]
-    return self._create_examples(dev_sections, "dev", data_dir)
+    return self._create_examples(data_dir, dev_sections, "dev")
   
   def get_test_examples(self, data_dir):
     test_sections = ['{:02}'.format(section_num) for section_num in PathConfig.test_sections]
-    return self._create_examples(test_sections, "test", data_dir)
+    return self._create_examples(data_dir, test_sections, "test")
 
   def get_labels(self):
     """See base class."""
     return ["0", "1", "2"]
 
-  def _create_examples(self, sections, set_type, data_dir):
+  def _create_examples(self, data_dir, sections, set_type):
     """Creates examples for the training and dev sets."""
     examples = []
-    instances = pdtb_preprocess(sections, data_dir)
-    for idx, instance in enumerate(instances):
-      if set_type == "test":
-        label = self.get_labels()[0]
-      else:
-        label = instance.label
-      examples.append(
-        InputExample(guid=idx, text_a=instance.arg1, text_b=instance.arg1, label=label))
+    input_file = os.path.join(data_dir, set_type+'.csv')
+    if os.path.isfile(input_file):
+      with tf.gfile.Open(input_file) as f:
+        reader = csv.reader(f, delimiter=';')
+        for i, line in enumerate(reader):
+          if i == 0: continue
+          if set_type === "test":
+            label = self.get_labels()[0]
+          else:
+            label = line[3]
+          examples.append(
+              InputExample(guid=line[0], text_a=line[1], text_b=line[2], label=label))
+    else:
+      instances = pdtb_preprocess(sections, data_dir, set_type)
+      for idx, instance in enumerate(instances):
+        if set_type == "test":
+          label = self.get_labels()[0]
+        else:
+          label = instance.label
+        examples.append(
+          InputExample(guid=idx, text_a=instance.arg1, text_b=instance.arg1, label=label))
     return examples
 
 class GLUEProcessor(DataProcessor):
