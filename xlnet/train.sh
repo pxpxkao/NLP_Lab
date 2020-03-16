@@ -1,6 +1,6 @@
 python run_classifier.py \
   --do_train=True \
-  --do_eval=False \
+  --do_eval=True \
   --task_name=pdtb \
   --data_dir=../../../nfs/nas-7.1/pwgao/data/PDTB-3.0/ \
   --output_dir=proc_data/pdtb \
@@ -10,7 +10,8 @@ python run_classifier.py \
   --model_config_path=../../../nfs/nas-7.1/pwgao/data/xlnet_cased_L-12_H-768_A-12/model_config.json \
   --init_checkpoint=../../../nfs/nas-7.1/pwgao/data/xlnet_cased_L-12_H-768_A-12/xlnet_model.ckpt \
   --max_seq_length=128 \
-  --train_batch_size=56 \
+  --train_batch_size=32 \
+  --eval_batch_size=8
   --num_hosts=1 \
   --num_core_per_host=4 \
   --learning_rate=2e-5 \
