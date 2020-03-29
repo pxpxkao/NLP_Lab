@@ -101,8 +101,8 @@ def get_label(sems):
     for sem in sems:
         sem_items = sem.split('.')
         if sem_items[0] == "Contingency":
-            # "Contingency.Cause.Reason" : Arg1 -> effect / Arg2 -> cause
-            # "Contingency.Cause.Result" : Arg1 -> cause / Arg2 -> effect
+            # "Contingency.Cause.Reason" : Arg1 -> effect / Arg2 -> cause : "1"
+            # "Contingency.Cause.Result" : Arg1 -> cause / Arg2 -> effect : "2"
             sem_items[1] = sem_items[1].split('+')[0]
             if sem_items[1] == "Cause":
                 sem_items[2] = sem_items[2].split('+')[0]
