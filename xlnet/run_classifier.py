@@ -236,6 +236,35 @@ class PDTBProcessor(DataProcessor):
           InputExample(guid=idx, text_a=instance.arg1, text_b=instance.arg1, label=label))
     return examples
 
+class FINCAUSALProcessor(DataProcessor):
+  def get_train_examples(self, data_dir):
+    return self._create_examples(os.path.join(data_dir, "train.csv"), "train")
+
+  def get_dev_examples(self, data_dir):
+    return self._create_examples(os.path.join(data_dir, "dev.csv"), "dev")
+
+  def get_test_examples(self, data_dir):
+    return self._create_examples(os.path.join(data_dir, "test.csv"), "test")
+
+  def get_labels(self):
+    """See base class."""
+    return ["0", "1", "2"]
+
+  def _create_examples(self, input_file, set_type):
+    """Creates examples for the training and dev sets."""
+    examples = []
+    with tf.gfile.Open(input_file) as f:
+      reader = csv.reader(f, delimiter=';')
+      for i, line in enumerate(reader):
+        if i == 0: continue
+        if set_type == "test":
+          label = self.get_labels()[0]
+        else:
+          label = line[3]
+        examples.append(
+            InputExample(guid=line[0], text_a=line[1], text_b=line[2], label=label))
+    return examples
+
 class GLUEProcessor(DataProcessor):
   def __init__(self):
     self.train_file = "train.tsv"
@@ -695,7 +724,8 @@ def main(_):
       'sts-b': StsbProcessor,
       'imdb': ImdbProcessor,
       "yelp5": Yelp5Processor,
-      'pdtb': PDTBProcessor
+      'pdtb': PDTBProcessor,
+      'fincausal': FINCAUSALProcessor
   }
 
   if not FLAGS.do_train and not FLAGS.do_eval and not FLAGS.do_predict:
