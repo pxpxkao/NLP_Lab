@@ -128,6 +128,7 @@ class Solver():
                 nonz = torch.nonzero(batch['src_mask'][i])
                 # print(nonz)
                 idx = nonz[-1][1].item()
+                print('idx', idx)
                 sentence = self.data_utils.id2label(out[i][:idx], True)
                 #print(l[1:])
                 f.write(sentence)

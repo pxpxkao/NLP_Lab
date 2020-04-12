@@ -180,8 +180,8 @@ class data_utils():
             if test and (index == self.label2id['x']):
                 continue
             sent.append(self.index2label[index])
-        # print("id2label len:", len(sent))
-        return ' '.join(sent[:-1])
+        print("id2label len:", len(sent))
+        return ' '.join(sent)
 
     def subsequent_mask(self, vec):
         attn_shape = (vec.shape[-1], vec.shape[-1])
