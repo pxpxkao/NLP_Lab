@@ -91,8 +91,6 @@ class Solver():
                 print('=============================================')
                 
                 w_step = int(step/1000)
-                if self.args.load_model:
-                    w_step += (int(self.args.load_model.split('/')[-1][0]))
                 print('Saving ' + str(w_step) + 'k_model.pth!\n')
                 model_name = str(w_step) + 'k_' + '%6.6f'%(sum(total_loss)/len(total_loss)) + 'model.pth'
                 state = {'step': step, 'state_dict': self.model.state_dict()}
