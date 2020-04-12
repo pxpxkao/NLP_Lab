@@ -95,6 +95,7 @@ class data_utils():
             self.index2word[self.word2id[word]] = word
 
         self.label2id = make_labeldic()
+        print('label2id:', self.label2id)
 
         self.index2label = [[]]*len(self.label2id)
         for word in self.label2id:
