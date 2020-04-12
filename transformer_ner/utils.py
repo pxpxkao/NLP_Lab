@@ -88,7 +88,7 @@ class data_utils():
         if os.path.exists(dict_path):
             self.word2id = read_json(dict_path)
         else:
-            self.word2id = make_dict(25000, dict_path, self.train_path)
+            self.word2id = make_dict(10000, dict_path, self.train_path)
 
         self.index2word = [[]]*len(self.word2id)
         for word in self.word2id:
