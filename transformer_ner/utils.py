@@ -138,8 +138,6 @@ class data_utils():
             if word in self.label2id:
                 vec[i] = self.label2id[word]
 
-        print(ner_list)
-        print(vec)
         return vec
 
     def data_yielder(self, src_file, tgt_file, num_epoch = 1):
