@@ -74,7 +74,7 @@ def make_dict(max_num, dict_path, train_path):
 
 def make_labeldic():
     label2id = {}
-    labels = ['x', 'E', 'C', '-']
+    labels = ['x', 'E', 'C', '_']
     for l in labels:
         label2id[l] = len(label2id)
     return label2id
@@ -137,6 +137,9 @@ class data_utils():
                 break
             if word in self.label2id:
                 vec[i] = self.label2id[word]
+
+        print(ner_list)
+        print(vec)
         return vec
 
     def data_yielder(self, src_file, tgt_file, num_epoch = 1):

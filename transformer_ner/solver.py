@@ -48,7 +48,7 @@ class Solver():
         total_loss = []
         start = time.time()
         
-        for step in range(1000000):
+        for step in range(1001):
             self.model.train()
             
             batch = data_yielder.__next__()
@@ -64,7 +64,7 @@ class Solver():
             optim.zero_grad()
             total_loss.append(loss.detach().cpu().numpy())
             
-            if step % 500 == 1:
+            if step % 200 == 1:
                 elapsed = time.time() - start
                 print("Epoch Step: %d Loss: %f Time: %f" %
                         (step, np.mean(total_loss), elapsed))
@@ -76,13 +76,11 @@ class Solver():
                 total_loss = []
                 print()
 
-            if step % 1000 == 1:
+            if step % 1000 == 0:
                 self.model.eval()
                 val_yielder = self.data_utils.data_yielder(self.args.valid_file, self.args.valid_tgt_file)
                 total_loss = []
                 for batch in val_yielder:
-                    batch['src'] = batch['src'].long()
-                    batch['src_extended'] = batch['src_extended'].long()
                     # print(len(batch['oov_list']))
                     out = self.model.forward(batch['src'].long(),
                             batch['src_mask'])
@@ -92,7 +90,7 @@ class Solver():
                 print('Validation Result -> Loss : %6.6f' %(sum(total_loss)/len(total_loss)))
                 print('=============================================')
                 
-                w_step = int(step/10000)
+                w_step = int(step/1000)
                 if self.args.load_model:
                     w_step += (int(self.args.load_model.split('/')[-1][0]))
                 print('Saving ' + str(w_step) + 'k_model.pth!\n')
