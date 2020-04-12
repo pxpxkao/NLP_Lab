@@ -123,9 +123,6 @@ class data_utils():
                 vec[i] = self.word2id['__UNK__']
                 unknown += 1
 
-        if unknown / length > 0.1 or length > seq_length*1.5:
-            vec = None
-
         return vec
     
     def labeltext2id(self, text, seq_length=200):
@@ -159,6 +156,9 @@ class data_utils():
                         batch = {k: cc(v) for k, v in batch.items()}
                         yield batch
                         batch = {'src':[], 'src_mask':[],'y':[]}
+            if not self.train:
+                batch = {k: cc(v) for k, v in batch.items()}
+                yield batch
             end_time = time.time()
             print('finish epo %d, time %f' % (epo,end_time-start_time))
 
