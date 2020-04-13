@@ -1,2 +1,3 @@
 .DS_Store
-
+transformer_ner/pred_dir
+transformer_ner/train_model

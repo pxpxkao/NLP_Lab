@@ -6,9 +6,9 @@ from sklearn.metrics import classification_report
 
 '''
 Usage:
-    python3 test_classification.py [tgt_file] [pred_file]
+    python3 test_task1.py [tgt_file] [pred_file]
 Example:
-    python3 test_classification.py dev.csv fincausal.tsv
+    python3 test_task1.py dev.csv fincausal.tsv
 
 CSV columns -> Index ; Arg1 ; Arg2 ; **Label**
 '''
