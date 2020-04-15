@@ -39,7 +39,6 @@ def make_causal_input(lod, map_, silent=True):
     for i in range(len(lod)):
         line_ = lod[i]['sentence']
         line = re.sub(rx, '', line_)
-        #print(line)
         ante = lod[i]['cause']
         ante = re.sub(rx, '', ante)
         cons = lod[i]['effect']
@@ -62,9 +61,15 @@ def make_causal_input(lod, map_, silent=True):
 
             d_[idx].append([tuple([d[idx][0][0], '_']), d[idx][0][1]])
 
-            init_a = line.find(ante)
-            init_c = line.find(cons)
+            def cut_space(init_t):
+                for s_idx, s in enumerate(line[init_t:]):
+                    if s != ' ':
+                        init_t += s_idx
+                        return init_t
 
+            init_a = cut_space(line.find(ante))
+            init_c = cut_space(line.find(cons))
+            
             for el in word_tokenize(ante):
                 start = line.find(el, init_a)
                 # print('start A')
@@ -72,28 +77,31 @@ def make_causal_input(lod, map_, silent=True):
                 # print(int(d_[idx][0][1]))
                 stop = line.find(el, init_a) + len(el)
                 word = line[start:stop]
-                #print(word)
+                # print(word)
                 if int(start) == int(d_[idx][0][1]):
                     und_ = defaultdict(list)
                     und_[idx].append([tuple([word, 'C']), line.find(word, init_a)])
                     d_[idx] = und_[idx]
-                init_a += len(word)
+                    break
+                # init_a += len(word) # wrong
+                init_a = cut_space(init_a+len(word))
 
 
             for el in word_tokenize(cons):
-
                 start = line.find(el, init_c)
                 # print('start C')
                 # print(start)
                 # print(int(d_[idx][0][1]))
                 stop = line.find(el, init_c) + len(el)
                 word = line[start:stop]
-                #print(word)
+                # print(word)
                 if int(start) == int(d_[idx][0][1]):
                     und_ = defaultdict(list)
                     und_[idx].append([tuple([word, 'E']), line.find(word, init_c)])
                     d_[idx] = und_[idx]
-                init_c += len(word)
+                    break
+                # init_c += len(word) # wrong
+                init_c = cut_space(init_c+len(word))
 
         dd[i].append(d_)
 
@@ -129,7 +137,7 @@ if __name__ == '__main__':
         dict_ = s2dict(list_, map1)
         lodict_.append(dict_)
 
-    print('transformation example: ', lodict_[1])
+    print('transformation example: ', lodict_[3])
 
     map_ = [('cause', 'C'), ('effect', 'E')]
     hometags = make_causal_input(lodict_, map_)
@@ -140,6 +148,8 @@ if __name__ == '__main__':
 
     X = [get_tokens(doc) for doc in data]
     y = [get_multi_labels(doc) for doc in data]
+    # print(X[3], len(X[3]))
+    # print(y[3], len(y[3]))
 
     size = 0.2
     seed = 42
@@ -157,4 +167,4 @@ if __name__ == '__main__':
     write_file('./data/task2.train.tgt', y_train)
     write_file('./data/task2.val.src', X_test)
     write_file('./data/task2.val.tgt', y_test)
-
+    print("Done!")
