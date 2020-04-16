@@ -8,6 +8,8 @@ import re
 from sklearn.model_selection import train_test_split
 
 # nltk.word_tokenize : max_len 176
+# 3 Labels : "_" ""C" "E"
+# 5 Labels : "_" "B-C" "I-C" "B-E" "I-E"
 
 def s2dict(lines, lot):
 
@@ -23,7 +25,7 @@ def s2dict(lines, lot):
     return d
 
 
-def make_causal_input(lod, map_, silent=True):
+def make_causal_input(lod, map_, silent=True, bio=True):
 
     """
     :param lod: list of dictionaries
@@ -70,7 +72,8 @@ def make_causal_input(lod, map_, silent=True):
             init_a = cut_space(line.find(ante))
             init_c = cut_space(line.find(cons))
             
-            for el in word_tokenize(ante):
+            ante_list = word_tokenize(ante)
+            for (el_idx, el) in enumerate(ante_list):
                 start = line.find(el, init_a)
                 # print('start A')
                 # print(start)
@@ -80,14 +83,19 @@ def make_causal_input(lod, map_, silent=True):
                 # print(word)
                 if int(start) == int(d_[idx][0][1]):
                     und_ = defaultdict(list)
-                    und_[idx].append([tuple([word, 'C']), line.find(word, init_a)])
+                    if bio and el_idx == 0:
+                        und_[idx].append([tuple([word, 'B-C']), line.find(word, init_a)])
+                    elif bio:
+                        und_[idx].append([tuple([word, 'I-C']), line.find(word, init_a)])
+                    else:
+                        und_[idx].append([tuple([word, 'C']), line.find(word, init_a)])
                     d_[idx] = und_[idx]
                     break
                 # init_a += len(word) # wrong
                 init_a = cut_space(init_a+len(word))
 
-
-            for el in word_tokenize(cons):
+            cons_list = word_tokenize(cons)
+            for (el_idx, el) in enumerate(cons_list):
                 start = line.find(el, init_c)
                 # print('start C')
                 # print(start)
@@ -97,7 +105,12 @@ def make_causal_input(lod, map_, silent=True):
                 # print(word)
                 if int(start) == int(d_[idx][0][1]):
                     und_ = defaultdict(list)
-                    und_[idx].append([tuple([word, 'E']), line.find(word, init_c)])
+                    if bio and el_idx == 0:
+                        und_[idx].append([tuple([word, 'B-E']), line.find(word, init_c)])
+                    elif bio:
+                        und_[idx].append([tuple([word, 'I-E']), line.find(word, init_c)])
+                    else:
+                        und_[idx].append([tuple([word, 'E']), line.find(word, init_c)])
                     d_[idx] = und_[idx]
                     break
                 # init_c += len(word) # wrong

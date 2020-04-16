@@ -74,7 +74,7 @@ def make_dict(max_num, dict_path, train_path):
 
 def make_labeldic():
     label2id = {}
-    labels = ['x', 'E', 'C', '_']
+    labels = ['x', 'B-E', 'I-E', 'B-C', 'I-C', '_']
     for l in labels:
         label2id[l] = len(label2id)
     return label2id
