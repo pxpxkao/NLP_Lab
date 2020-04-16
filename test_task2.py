@@ -40,7 +40,7 @@ print('F1score:', F1metrics[2])
 print('Precision: ', F1metrics[1])
 print('Recall: ', F1metrics[0])
 cnt = 0
-for t, p in enumerate(zip(y_test, y_pred)):
-    if t == p:
+for i in range(len(y_test)):
+    if y_pred[i] == y_test[i]:
         cnt += 1
-print('Exact matches: ', cnt, 'over', len(truths), 'total sentences...')
+print('Exact matches: ', cnt, 'over', len(y_pred), 'total sentences...')
