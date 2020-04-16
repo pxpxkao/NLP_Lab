@@ -14,13 +14,13 @@ class Solver():
         self.args = args
 
         self.data_utils = data_utils(args)
-        self.model = self.make_model(self.data_utils.vocab_size, N=4, dropout=0.25)
+        self.model = self.make_model(self.data_utils.vocab_size, N=6)
 
         self.model_dir = make_save_dir(args.model_dir)
 
 
-    def make_model(self, src_vocab, N=4, 
-            d_model=512, d_ff=2048, h=8, dropout=0.25):
+    def make_model(self, src_vocab, N=6, 
+            d_model=512, d_ff=2048, h=8, dropout=0.1):
         "Helper: Construct a model from hyperparameters."
         c = copy.deepcopy
         attn = MultiHeadedAttention(h, d_model)
