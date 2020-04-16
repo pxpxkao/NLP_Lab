@@ -48,7 +48,7 @@ class Solver():
         total_loss = []
         start = time.time()
         
-        for step in range(1001):
+        for step in range(751):
             self.model.train()
             
             batch = data_yielder.__next__()
@@ -64,7 +64,7 @@ class Solver():
             optim.zero_grad()
             total_loss.append(loss.detach().cpu().numpy())
             
-            if step % 100 == 1:
+            if step % 50 == 1:
                 elapsed = time.time() - start
                 print("Epoch Step: %d Loss: %f Time: %f" %
                         (step, np.mean(total_loss), elapsed))
@@ -76,7 +76,7 @@ class Solver():
                 total_loss = []
                 print()
 
-            if step % 100 == 0:
+            if step % 50 == 0:
                 self.model.eval()
                 val_yielder = self.data_utils.data_yielder(self.args.valid_file, self.args.valid_tgt_file)
                 total_loss = []
@@ -90,9 +90,9 @@ class Solver():
                 print('Validation Result -> Loss : %6.6f' %(sum(total_loss)/len(total_loss)))
                 print('=============================================')
                 
-                w_step = int(step/100)
-                print('Saving ' + str(w_step) + 'k_model.pth!\n')
-                model_name = str(w_step) + '00_' + '%6.6f'%(sum(total_loss)/len(total_loss)) + 'model.pth'
+                # w_step = int(step/50 * 5)
+                print('Saving ' + str(step) + '_model.pth!\n')
+                model_name = str(step) + '_' + '%6.6f'%(sum(total_loss)/len(total_loss)) + 'model.pth'
                 state = {'step': step, 'state_dict': self.model.state_dict()}
 
                 torch.save(state, os.path.join(self.model_dir, model_name))
