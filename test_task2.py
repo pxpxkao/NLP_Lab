@@ -38,3 +38,4 @@ F1metrics = precision_recall_fscore_support(truths, predictions, average='weight
 print('F1score:', F1metrics[2])
 print('Precision: ', F1metrics[1])
 print('Recall: ', F1metrics[0])
+print('Exact matches: ', np.sum(truths == predictions) / len(truths))
