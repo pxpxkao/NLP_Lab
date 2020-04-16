@@ -25,6 +25,7 @@ with open(args[2], 'r') as f:
 
 truths = np.array([labels[tag] for row in y_test for tag in row])
 predictions = np.array([labels[tag] for row in y_pred for tag in row])  
+print(np.sum(truths == predictions) / len(truths))
 
 # # Print out the classification report
 print('************************ classification report ***************************', '\t')
@@ -38,4 +39,8 @@ F1metrics = precision_recall_fscore_support(truths, predictions, average='weight
 print('F1score:', F1metrics[2])
 print('Precision: ', F1metrics[1])
 print('Recall: ', F1metrics[0])
-print('Exact matches: ', np.sum(truths == predictions) / len(truths))
+cnt = 0
+for t, p in enumerate(y_test, y_pred):
+    if t == p:
+        cnt += 1
+print('Exact matches: ', cnt, 'over', len(truths), 'total sentences...')
