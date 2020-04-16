@@ -14,13 +14,13 @@ class Solver():
         self.args = args
 
         self.data_utils = data_utils(args)
-        self.model = self.make_model(self.data_utils.vocab_size, 4)
+        self.model = self.make_model(self.data_utils.vocab_size, N=4, d_model=256, d_ff=1028, h=8, dropout=0.3)
 
         self.model_dir = make_save_dir(args.model_dir)
 
 
-    def make_model(self, src_vocab, N=6, 
-            d_model=512, d_ff=2048, h=8, dropout=0.1):
+    def make_model(self, src_vocab, N=4, 
+            d_model=512, d_ff=2048, h=8, dropout=0.25):
         "Helper: Construct a model from hyperparameters."
         c = copy.deepcopy
         attn = MultiHeadedAttention(h, d_model)
@@ -64,7 +64,7 @@ class Solver():
             optim.zero_grad()
             total_loss.append(loss.detach().cpu().numpy())
             
-            if step % 50 == 1:
+            if step % 100 == 1:
                 elapsed = time.time() - start
                 print("Epoch Step: %d Loss: %f Time: %f" %
                         (step, np.mean(total_loss), elapsed))
@@ -76,7 +76,7 @@ class Solver():
                 total_loss = []
                 print()
 
-            if step % 50 == 0:
+            if step % 100 == 0:
                 self.model.eval()
                 val_yielder = self.data_utils.data_yielder(self.args.valid_file, self.args.valid_tgt_file)
                 total_loss = []
@@ -90,7 +90,6 @@ class Solver():
                 print('Validation Result -> Loss : %6.6f' %(sum(total_loss)/len(total_loss)))
                 print('=============================================')
                 
-                # w_step = int(step/50 * 5)
                 print('Saving ' + str(step) + '_model.pth!\n')
                 model_name = str(step) + '_' + '%6.6f'%(sum(total_loss)/len(total_loss)) + 'model.pth'
                 state = {'step': step, 'state_dict': self.model.state_dict()}

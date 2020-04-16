@@ -25,7 +25,7 @@ def s2dict(lines, lot):
     return d
 
 
-def make_causal_input(lod, map_, silent=True, bio=True):
+def make_causal_input(lod, map_, silent=True, bio=False):
 
     """
     :param lod: list of dictionaries
