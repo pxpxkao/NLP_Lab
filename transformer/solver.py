@@ -14,7 +14,7 @@ class Solver():
         self.args = args
 
         self.data_utils = data_utils(args)
-        self.model = self.make_model(self.data_utils.vocab_size, N=4, d_model=256, d_ff=1028, h=8, dropout=0.3)
+        self.model = self.make_model(self.data_utils.vocab_size, N=4, dropout=0.25)
 
         self.model_dir = make_save_dir(args.model_dir)
 
@@ -48,7 +48,7 @@ class Solver():
         total_loss = []
         start = time.time()
         
-        for step in range(751):
+        for step in range(801):
             self.model.train()
             
             batch = data_yielder.__next__()
