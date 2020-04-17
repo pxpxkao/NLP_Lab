@@ -61,7 +61,7 @@ for sent in dev_sentences:
 # Set the maximum sequence length.
 # I've chosen 64 somewhat arbitrarily. It's slightly larger than the
 # maximum training sentence length of 47...
-MAX_LEN = 200
+MAX_LEN = 128
 
 print('\nPadding/truncating all sentences to %d values...' % MAX_LEN)
 
@@ -180,7 +180,7 @@ optimizer = AdamW(model.parameters(),
                 )
 
 # Number of training epochs (authors recommend between 2 and 4)
-epochs = 4
+epochs = 3
 
 # Total number of training steps is number of batches * number of epochs.
 total_steps = len(train_dataloader) * epochs
