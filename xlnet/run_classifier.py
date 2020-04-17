@@ -238,10 +238,10 @@ class PDTBProcessor(DataProcessor):
 
 class FINCAUSALProcessor(DataProcessor):
   def get_train_examples(self, data_dir):
-    return self._create_examples(os.path.join(data_dir, "train.csv"), "train")
+    return self._create_examples(os.path.join(data_dir, "train_cut.csv"), "train")
 
   def get_dev_examples(self, data_dir):
-    return self._create_examples(os.path.join(data_dir, "dev.csv"), "dev")
+    return self._create_examples(os.path.join(data_dir, "dev_cut.csv"), "dev")
 
   def get_test_examples(self, data_dir):
     return self._create_examples(os.path.join(data_dir, "test.csv"), "test")
@@ -260,9 +260,9 @@ class FINCAUSALProcessor(DataProcessor):
         if set_type == "test":
           label = self.get_labels()[0]
         else:
-          label = line[3]
+          label = line[2]
         examples.append(
-            InputExample(guid=line[0], text_a=line[1], text_b=line[2], label=label))
+            InputExample(guid=line[0], text_a=line[1], text_b="", label=label))
     return examples
 
 class GLUEProcessor(DataProcessor):

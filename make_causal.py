@@ -137,6 +137,15 @@ def get_multi_labels(doc):
     """
     return [label for (token, label) in doc]
 
+def write_file(filename, data):
+    with open(filename, 'w') as f:
+        for seq in data:
+            if len(seq) != len(' '.join(seq).split()):
+                print(seq)
+            assert len(seq) == len(' '.join(seq).split())
+            f.write(' '.join(seq))
+            f.write('\n')
+
 if __name__ == '__main__':
     # -------------------------------------------------------------------------------- #
     #                                   Make data                                      #
@@ -167,15 +176,7 @@ if __name__ == '__main__':
     size = 0.2
     seed = 42
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=size, random_state=seed)
-
-    def write_file(filename, data):
-        with open(filename, 'w') as f:
-            for seq in data:
-                if len(seq) != len(' '.join(seq).split()):
-                    print(seq)
-                assert len(seq) == len(' '.join(seq).split())
-                f.write(' '.join(seq))
-                f.write('\n')
+    
     write_file('./data/task2.train.src', X_train)
     write_file('./data/task2.train.tgt', y_train)
     write_file('./data/task2.val.src', X_test)
