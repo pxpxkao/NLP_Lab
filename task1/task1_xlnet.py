@@ -71,10 +71,10 @@ print('\nPadding token: "{:}", ID: {:}'.format(tokenizer.pad_token, tokenizer.pa
 # "post" indicates that we want to pad and truncate at the end of the sequence,
 # as opposed to the beginning.
 input_ids = pad_sequences(input_ids, maxlen=MAX_LEN, dtype="long", 
-                          value=0, truncating="post", padding="post")
+                          value=5, truncating="post", padding="post")
 
 dev_input_ids = pad_sequences(dev_input_ids, maxlen=MAX_LEN, dtype="long", 
-                          value=0, truncating="post", padding="post")
+                          value=5, truncating="post", padding="post")
 
 print('\nDone.')
 print(input_ids[1])
@@ -156,22 +156,22 @@ model.to(device)
 # Get all of the model's parameters as a list of tuples.
 params = list(model.named_parameters())
 
-print('The XLNet model has {:} different named parameters.\n'.format(len(params)))
+# print('The XLNet model has {:} different named parameters.\n'.format(len(params)))
 
-print('==== Embedding Layer ====\n')
+# print('==== Embedding Layer ====\n')
 
-for p in params[0:5]:
-    print("{:<55} {:>12}".format(p[0], str(tuple(p[1].size()))))
+# for p in params[0:5]:
+#     print("{:<55} {:>12}".format(p[0], str(tuple(p[1].size()))))
 
-print('\n==== First Transformer ====\n')
+# print('\n==== First Transformer ====\n')
 
-for p in params[5:21]:
-    print("{:<55} {:>12}".format(p[0], str(tuple(p[1].size()))))
+# for p in params[5:21]:
+#     print("{:<55} {:>12}".format(p[0], str(tuple(p[1].size()))))
 
-print('\n==== Output Layer ====\n')
+# print('\n==== Output Layer ====\n')
 
-for p in params[-4:]:
-    print("{:<55} {:>12}".format(p[0], str(tuple(p[1].size()))))
+# for p in params[-4:]:
+#     print("{:<55} {:>12}".format(p[0], str(tuple(p[1].size()))))
     
 
 optimizer = AdamW(model.parameters(),
