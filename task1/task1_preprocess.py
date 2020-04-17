@@ -7,12 +7,12 @@ from pandas import DataFrame
 def bertIn():
     le = LabelEncoder()
     #read source data from csv file
-    df_train = pd.read_csv('./data/train.csv', sep = '; ', engine='python')
-    df_test = pd.read_csv('./data/test_gold.csv', sep = '; ', engine='python')
-
+    df_train = pd.read_csv('./data/train.csv', sep = ';', engine='python')
+    df_test = pd.read_csv('./data/test_gold.csv', sep = ';', engine='python')
+    print(df_train.columns)
 	#create a new dataframe for train, dev data
     df_bert = pd.DataFrame({'id': np.arange(len(df_train)),
-	'label': le.fit_transform(df_train['Gold']),
+	'label': le.fit_transform(df_train.Gold.values),
 	'alpha': ['a']*df_train.shape[0],
 	'text': df_train['Text']})
 
