@@ -43,7 +43,6 @@ for sent in sentences:
     
     # Add the encoded sentence to the list.
     input_ids.append(encoded_sent)
-print("\nInput:", input_ids[0])
 
 # For every sentence...
 for sent in dev_sentences:
@@ -78,7 +77,7 @@ dev_input_ids = pad_sequences(dev_input_ids, maxlen=MAX_LEN, dtype="long",
                           value=0, truncating="post", padding="post")
 
 print('\nDone.')
-
+print(input_ids[1])
 # Create attention masks
 attention_masks = []
 dev_attention_masks = []
@@ -93,7 +92,7 @@ for sent in input_ids:
     
     # Store the attention mask for this sentence.
     attention_masks.append(att_mask)
-
+print(attention_masks[1])
 # For each sentence...
 for sent in dev_input_ids:
     
