@@ -1,3 +1,4 @@
 .DS_Store
-transformer_ner/pred_dir
-transformer_ner/train_model
+transformer/pred_dir
+transformer/train_model
+__pycache__

@@ -1,5 +1,5 @@
 PDTB_DATA_DIR=../../../../nfs/nas-7.1/pwgao/data/PDTB-3.0/data
-FIN_DATA_DIR=task1/
+FIN_DATA_DIR=../task1/
 BASED_DIR=../../../../nfs/nas-7.1/pwgao/data/xlnet_cased_L-12_H-768_A-12
 CUDA_VISIBLE_DEVICES=0 python3.6 run_classifier.py \
   --do_train=True \
