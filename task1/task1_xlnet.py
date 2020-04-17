@@ -419,7 +419,7 @@ test_attention_masks = []
 
 # Create a mask of 1s for each token followed by 0s for padding
 for seq in test_input_ids:
-  seq_mask = [float(i>0) for i in seq]
+  seq_mask = [float(i!=5) for i in seq]
   test_attention_masks.append(seq_mask) 
 
 # Convert to tensors.
