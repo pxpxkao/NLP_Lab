@@ -43,6 +43,7 @@ for sent in sentences:
     
     # Add the encoded sentence to the list.
     input_ids.append(encoded_sent)
+print("\nInput:", input_ids[0])
 
 # For every sentence...
 for sent in dev_sentences:
@@ -88,7 +89,7 @@ for sent in input_ids:
     # Create the attention mask.
     #   - If a token ID is 0, then it's padding, set the mask to 0.
     #   - If a token ID is > 0, then it's a real token, set the mask to 1.
-    att_mask = [int(token_id > 0) for token_id in sent]
+    att_mask = [int(token_id != 5) for token_id in sent]
     
     # Store the attention mask for this sentence.
     attention_masks.append(att_mask)
@@ -99,13 +100,13 @@ for sent in dev_input_ids:
     # Create the attention mask.
     #   - If a token ID is 0, then it's padding, set the mask to 0.
     #   - If a token ID is > 0, then it's a real token, set the mask to 1.
-    att_mask = [int(token_id > 0) for token_id in sent]
+    att_mask = [int(token_id != 5) for token_id in sent]
     
     # Store the attention mask for this sentence.
     dev_attention_masks.append(att_mask)
     
 
-# Use 90% for training and 10% for validation.
+# Use 80% for training and 20% for validation.
 train_inputs = input_ids 
 validation_inputs = dev_input_ids
 train_labels = labels
