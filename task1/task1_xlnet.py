@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 from torch.utils.data import TensorDataset, DataLoader, RandomSampler, SequentialSampler
 from keras.preprocessing.sequence import pad_sequences
@@ -385,6 +386,15 @@ for epoch_i in range(0, epochs):
 
 print("")
 print("Training complete!")
+
+##################### Save Models ########################
+if not os.path.exists('models'):
+    os.mkdir('models')
+# Simple serialization for models and tokenizers
+model.save_pretrained(os.path.join('models', 'model.ckpt'))  # save
+# model = model_class.from_pretrained(os.path.join('models', 'model.ckpt'))  # re-load
+tokenizer.save_pretrained(os.path.join('models', 'tokenizer.ckpt'))  # save
+# tokenizer = BertTokenizer.from_pretrained(os.path.join('models', 'tokenizer.ckpt'))  # re-load
 
 # Load the dataset into a pandas dataframe.
 test_df = pd.read_csv("./data/test.tsv", delimiter='\t', header=None, names=['id', 'sentence', 'label'])
