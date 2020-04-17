@@ -388,13 +388,14 @@ print("")
 print("Training complete!")
 
 ##################### Save Models ########################
-if not os.path.exists('models'):
-    os.mkdir('models')
+model_dir = 'model'
+if not os.path.exists(model_dir):
+    os.mkdir(model_dir)
 # Simple serialization for models and tokenizers
-model.save_pretrained(os.path.join('models', 'model.ckpt'))  # save
-# model = model_class.from_pretrained(os.path.join('models', 'model.ckpt'))  # re-load
-tokenizer.save_pretrained(os.path.join('models', 'tokenizer.ckpt'))  # save
-# tokenizer = BertTokenizer.from_pretrained(os.path.join('models', 'tokenizer.ckpt'))  # re-load
+model.save_pretrained(model_dir)  # save
+# model = model_class.from_pretrained(model_dir)  # re-load
+tokenizer.save_pretrained(model_dir)  # save
+# tokenizer = BertTokenizer.from_pretrained(model_dir)  # re-load
 
 # Load the dataset into a pandas dataframe.
 test_df = pd.read_csv("./data/test.tsv", delimiter='\t', header=None, names=['id', 'sentence', 'label'])
