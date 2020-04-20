@@ -1,0 +1,2 @@
+python3 task1_preprocess.py
+python3 task1_bert_baseline.py
