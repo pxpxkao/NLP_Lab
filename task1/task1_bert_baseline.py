@@ -140,14 +140,19 @@ validation_sampler = SequentialSampler(validation_data)
 validation_dataloader = DataLoader(validation_data, sampler=validation_sampler, batch_size=batch_size)
 
 # Load BertForSequenceClassification, the pretrained BERT model with a single 
-# linear classification layer on top. 
-model = BertForSequenceClassification.from_pretrained(
-    "bert-base-uncased", # Use the 12-layer BERT model, with an uncased vocab.
-    num_labels = 2, # The number of output labels--2 for binary classification.
-                    # You can increase this for multi-class tasks.   
-    output_attentions = False, # Whether the model returns attentions weights.
-    output_hidden_states = False, # Whether the model returns all hidden-states.
-)
+# linear classification layer on top.
+load = True 
+if load and os.path.exists('model'):
+    model = BertForSequenceClassification.from_pretrained('model')
+else:
+    model = BertForSequenceClassification.from_pretrained(
+        "bert-base-uncased", # Use the 12-layer BERT model, with an uncased vocab.
+        num_labels = 2, # The number of output labels--2 for binary classification.
+                        # You can increase this for multi-class tasks.   
+        output_attentions = False, # Whether the model returns attentions weights.
+        output_hidden_states = False, # Whether the model returns all hidden-states.
+    )
+
 
 # Tell pytorch to run this model on the GPU.
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
