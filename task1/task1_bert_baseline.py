@@ -26,8 +26,13 @@ dev_sentences = dev_df.sentence.values
 dev_labels = dev_df.label.values
 
 # Load the BERT tokenizer.
+load = True
 print('Loading BERT tokenizer...')
-tokenizer = BertTokenizer.from_pretrained('bert-base-uncased', do_lower_case=True)
+if load and os.path.exists('model'):
+    print('Load from saved...')
+    tokenizer = BertTokenizer.from_pretrained('model')
+else:
+    tokenizer = BertTokenizer.from_pretrained('bert-base-uncased', do_lower_case=True)
 
 # Tokenize all of the sentences and map the tokens to thier word IDs.
 input_ids = []
@@ -62,7 +67,7 @@ for sent in dev_sentences:
 # Set the maximum sequence length.
 # I've chosen 64 somewhat arbitrarily. It's slightly larger than the
 # maximum training sentence length of 47...
-MAX_LEN = 128
+MAX_LEN = 200
 
 print('\nPadding/truncating all sentences to %d values...' % MAX_LEN)
 
@@ -141,9 +146,8 @@ validation_dataloader = DataLoader(validation_data, sampler=validation_sampler, 
 
 # Load BertForSequenceClassification, the pretrained BERT model with a single 
 # linear classification layer on top.
-load = True 
 if load and os.path.exists('model'):
-    print('Load model...')
+    print('Load from saved...')
     model = BertForSequenceClassification.from_pretrained('model')
 else:
     model = BertForSequenceClassification.from_pretrained(
