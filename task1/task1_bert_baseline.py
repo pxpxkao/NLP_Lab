@@ -385,6 +385,8 @@ for epoch_i in range(0, epochs):
 
 print("")
 print("Training complete!")
+print("Save model!")
+model.save_pretrained('model.ckpt')  # save
 
 # Load the dataset into a pandas dataframe.
 test_df = pd.read_csv("./data/test.tsv", delimiter='\t', header=None, names=['id', 'sentence', 'label'])
