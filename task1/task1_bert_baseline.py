@@ -67,7 +67,7 @@ for sent in dev_sentences:
 # Set the maximum sequence length.
 # I've chosen 64 somewhat arbitrarily. It's slightly larger than the
 # maximum training sentence length of 47...
-MAX_LEN = 200
+MAX_LEN = 128
 
 print('\nPadding/truncating all sentences to %d values...' % MAX_LEN)
 
