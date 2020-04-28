@@ -400,6 +400,7 @@ print("Save model!")
 if not os.path.exists('model'):
     os.mkdir('model')
 model.save_pretrained('model')  # save
+tokenizer.save_pretrained('model') # save
 
 # Load the dataset into a pandas dataframe.
 test_df = pd.read_csv("./data/test.tsv", delimiter='\t', header=None, names=['id', 'sentence', 'label'])
