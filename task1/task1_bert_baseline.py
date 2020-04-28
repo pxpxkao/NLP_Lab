@@ -143,6 +143,7 @@ validation_dataloader = DataLoader(validation_data, sampler=validation_sampler, 
 # linear classification layer on top.
 load = True 
 if load and os.path.exists('model'):
+    print('Load model...')
     model = BertForSequenceClassification.from_pretrained('model')
 else:
     model = BertForSequenceClassification.from_pretrained(
