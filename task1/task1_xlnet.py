@@ -386,6 +386,10 @@ for epoch_i in range(0, epochs):
 
 print("")
 print("Training complete!")
+print("Save model!")
+if not os.path.exists('model_xlnet'):
+    os.mkdir('model_xlnet')
+model.save_pretrained('model_xlnet')  # save
 
 ##################### Save Models ########################
 model_dir = 'model'
