@@ -97,7 +97,7 @@ if __name__ == '__main__':
     '''
 
     # Declare trainer
-    trainer = pycrfsuite.Trainer(verbose=False)
+    trainer = pycrfsuite.Trainer(verbose=True)
 
     # Submit training data to the trainer
     for xseq, yseq in zip(X_train, y_train):
