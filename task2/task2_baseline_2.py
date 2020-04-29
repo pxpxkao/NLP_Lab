@@ -9,6 +9,7 @@ import pycrfsuite
 import os
 import pickle
 import nltk
+import csv
 
 # ------------------------------------------------------------------------------------ #
 #               This baseline uses nltk tokenizer and POS tagger                       #
@@ -203,7 +204,14 @@ if __name__ == '__main__':
     print('F1score:', F1metrics[2])
     print('Precision: ', F1metrics[1])
     print('Recall: ', F1metrics[0])
-    print('exact match: ', sum([i["diverge"] for i in nl if i["diverge"] == 0]), 'over', len(nl), ' total sentences)')
+    print('exact match: ', len(nl) - sum([i["diverge"] for i in nl if i['diverge']==1]), 'over', len(nl), ' total sentences)')
+
+    fieldn = sorted(list(set(k for d in nl for k in d)))
+    with open(os.path.join(modelpath_, ("predictions_" + str(args.idx)) + ".csv"), "w+", encoding='utf-8') as f:
+        writer = csv.DictWriter(f, fieldnames=fieldn, delimiter="~")
+        writer.writeheader()
+        for line in nl:
+            writer.writerow(line)
 
     # # Print out other metrics
     print('************************ crf metrics ***************************', '\t')
