@@ -95,7 +95,7 @@ if __name__ == '__main__':
     X_train_sent, X_test_sent = train_test_split(sent, test_size=size, random_state=seed)
 
     # Declare trainer
-    trainer = pycrfsuite.Trainer(verbose=args.verbose)
+    trainer = pycrfsuite.Trainer(verbose=False)
 
     # Submit training data to the trainer
     for xseq, yseq in zip(X_train, y_train):
@@ -170,7 +170,7 @@ if __name__ == '__main__':
             f.write('\n')
     with open('truth_tags.txt', 'w', encoding='utf-8') as f:
         for truth in y_test:
-            f.write(' '.join(pred))
+            f.write(' '.join(truth))
             f.write('\n')
     labels = {"C": 1, "E": 2, "_": 0}
 
