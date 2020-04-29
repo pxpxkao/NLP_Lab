@@ -35,6 +35,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
     parser.add_argument('--inrepo', type = str, default="./data/train.csv", help= 'input repo')
+    parser.add_argument('--predrepo', type = str, default="./data/test.csv", help= 'test repo')
 
     parser.add_argument('--idx', type = str, default="baseline", help= 'experience index')
     # ------------------------------------------------------------------------------------ #
@@ -52,39 +53,46 @@ if __name__ == '__main__':
     # ------------------------------------------------------------------------------------ #
     #                                       Make data                                      #
     # -------------------------------------------------------------------------------------#
+    def read_data(filename):
+        df = pd.read_csv(filename, delimiter=';', header=0)
 
-    df = pd.read_csv(args.inrepo, delimiter=';', header=0)
+        lodict_ = []
+        for rows in df.itertuples():
+            list_ = [rows[2], rows[3], rows[4]]
+            map1 = ['sentence', 'cause', 'effect']
+            dict_ = s2dict(list_, map1)
+            lodict_.append(dict_)
 
-    lodict_ = []
-    for rows in df.itertuples():
-        list_ = [rows[2], rows[3], rows[4]]
-        map1 = ['sentence', 'cause', 'effect']
-        dict_ = s2dict(list_, map1)
-        lodict_.append(dict_)
+        print('transformation example: ', lodict_[1])
 
-    print('transformation example: ', lodict_[1])
+        map_ = [('cause', 'C'), ('effect', 'E')]
+        hometags = make_causal_input(lodict_, map_)
+        postags = nltkPOS([i['sentence'] for i in lodict_])
+        sent = [i['sentence'] for i in lodict_]
 
-    map_ = [('cause', 'C'), ('effect', 'E')]
-    hometags = make_causal_input(lodict_, map_)
-    postags = nltkPOS([i['sentence'] for i in lodict_])
-    sent = [i['sentence'] for i in lodict_]
+        data = []
+        for i, (j, k) in enumerate(zip(hometags, postags)):
+            data.append([(w, pos, label) for (w, label), (word, pos) in zip(j, k)])
 
-    data = []
-    for i, (j, k) in enumerate(zip(hometags, postags)):
-        data.append([(w, pos, label) for (w, label), (word, pos) in zip(j, k)])
-
-    X = [extract_features(doc) for doc in data]
-    y = [get_multi_labels(doc) for doc in data]
-
+        X = [extract_features(doc) for doc in data]
+        y = [get_multi_labels(doc) for doc in data]
+        return X, y, sent
 
     # ------------------------------------------------------------------------------------ #
     #                                Make train and test sets                              #
     # -------------------------------------------------------------------------------------#
+    X_train, y_train, X_train_sent = read_data(args.inrepo)
+    X_test, y_test, X_test_sent = read_data(args.predrepo)
+    print('Length of Xtrain:', len(X_train))
+    print('Length of Xtest:', len(X_test))
+
+    '''
     size = 0.2
     seed = 42
     n = 100
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=size, random_state=seed)
     X_train_sent, X_test_sent = train_test_split(sent, test_size=size, random_state=seed)
+    '''
 
     # Declare trainer
     trainer = pycrfsuite.Trainer(verbose=True)
@@ -154,7 +162,7 @@ if __name__ == '__main__':
     # -------------------------------------------------------------------------------------#
 
     y_pred = [tagger.tag(xseq) for xseq in X_test]
-    with open('predictions.txt', 'w', encoding='utf-8') as f:
+    with open('predictions_tags.txt', 'w', encoding='utf-8') as f:
         for row in y_pred:
             f.write(' '.join(row))
             f.write('\n')
@@ -212,7 +220,7 @@ if __name__ == '__main__':
         writer.writeheader()
         for line in nl:
             writer.writerow(line)
-
+'''
     # # Print out other metrics
     print('************************ crf metrics ***************************', '\t')
 
@@ -242,4 +250,4 @@ if __name__ == '__main__':
 
     print("\nTop negative:")
     print_state_features(Counter(info.state_features).most_common()[-20:])
-
+'''
