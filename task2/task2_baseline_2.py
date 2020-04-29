@@ -99,6 +99,7 @@ if __name__ == '__main__':
 
     # Submit training data to the trainer
     for xseq, yseq in zip(X_train, y_train):
+        print(yseq)
         trainer.append(xseq, yseq)
 
 
