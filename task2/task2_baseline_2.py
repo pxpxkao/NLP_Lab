@@ -36,6 +36,7 @@ if __name__ == '__main__':
 
     parser.add_argument('--inrepo', type = str, default="./data/train.csv", help= 'input repo')
     parser.add_argument('--predrepo', type = str, default="./data/test_gold.csv", help= 'test repo')
+    parser.add_argument('--verbose', type = bool, default=True, help='print training')
 
     parser.add_argument('--idx', type = str, default="baseline", help= 'experience index')
     # ------------------------------------------------------------------------------------ #
@@ -94,7 +95,7 @@ if __name__ == '__main__':
     X_train_sent, X_test_sent = train_test_split(sent, test_size=size, random_state=seed)
 
     # Declare trainer
-    trainer = pycrfsuite.Trainer(verbose=True)
+    trainer = pycrfsuite.Trainer(verbose=args.verbose)
 
     # Submit training data to the trainer
     for xseq, yseq in zip(X_train, y_train):
@@ -165,6 +166,10 @@ if __name__ == '__main__':
         for pred, text in zip(y_pred, X_test_sent):
             f.write(text)
             f.write('\n')
+            f.write(' '.join(pred))
+            f.write('\n')
+    with open('truth_tags.txt', 'w', encoding='utf-8') as f:
+        for truth in y_test:
             f.write(' '.join(pred))
             f.write('\n')
     labels = {"C": 1, "E": 2, "_": 0}
