@@ -1,0 +1,1 @@
+python task2_baseline_2.py --idx 0 --c1 0.5 --minfreq 0.4 --featstate 0 --maxiter 3000 --trans 0
