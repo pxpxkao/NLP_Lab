@@ -94,12 +94,12 @@ def make_causal_input(lod, map_, silent=True):
                     und_[idx].append([tuple([el, 'E']), line.find(el, init_e)])
                     d_[idx] = und_[idx]
 
-            init_e += len(el)
+            init_e += len(word)
 
         dd[i].append(d_)
 
-    for dict_ in dd:
-        dd_.append([item[0][0] for sub in [[j for j in i.values()] for i in lflatten(dd[dict_])] for item in sub])
+        for dict_ in dd:
+            dd_.append([item[0][0] for sub in [[j for j in i.values()] for i in lflatten(dd[dict_])] for item in sub])
 
     return dd_
 
