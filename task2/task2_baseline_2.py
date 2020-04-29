@@ -86,7 +86,7 @@ if __name__ == '__main__':
     X_test, y_test, X_test_sent = read_data(args.predrepo)
     print('Length of Xtrain:', len(X_train))
     print('Length of Xtest:', len(X_test))
-    
+
     '''
     X, y, sent = read_data(args.inrepo)
     size = 0.2
@@ -95,8 +95,6 @@ if __name__ == '__main__':
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=size, random_state=seed)
     X_train_sent, X_test_sent = train_test_split(sent, test_size=size, random_state=seed)
     '''
-    for yseq in y_train:
-        print(' '.join(yseq))
 
     # Declare trainer
     trainer = pycrfsuite.Trainer(verbose=False)

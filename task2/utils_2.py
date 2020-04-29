@@ -3,6 +3,7 @@ from nltk.tokenize import word_tokenize
 import nltk
 from funcy import lflatten
 import re
+from sklearn.model_selection import train_test_split
 
 
 def s2dict(lines, lot):
@@ -58,11 +59,11 @@ def make_causal_input(lod, map_, silent=True):
         for idx in d:
             d_[idx].append([tuple([d[idx][0][0], '_']), d[idx][0][1]])
 
-        # def cut_space(init_t):
-        #     for s_idx, s in enumerate(line[init_t:]):
-        #         if s != ' ':
-        #             init_t += s_idx
-        #             return init_t
+        def cut_space(init_t):
+            for s_idx, s in enumerate(line[init_t:]):
+                if s != ' ':
+                    init_t += s_idx
+                    return init_t
 
         # init_c = cut_space(line.find(caus))
         # init_e = cut_space(line.find(effe))
@@ -80,6 +81,7 @@ def make_causal_input(lod, map_, silent=True):
                     d_[idx] = und_[idx]
                     
             init_c += len(cl)
+            # init_c = cut_space(init_c+len(cl))
             # print('increment_c', init_c)
 
 
@@ -95,6 +97,7 @@ def make_causal_input(lod, map_, silent=True):
                     d_[idx] = und_[idx]
 
             init_e += len(word)
+            # init_e = cut_space(init_e+len(el))
 
         dd[i].append(d_)
 
@@ -174,6 +177,12 @@ def extract_features(doc):
     """
     return [word2features(doc, i) for i in range(len(doc))]
 
+def get_tokens(doc):
+    """
+    :param doc:
+    :return:
+    """
+    return [token for (token, postag, label) in doc]
 
 # A function fo generating the list of labels for each document: TOKEN, POS, LABEL
 def get_multi_labels(doc):
@@ -183,7 +192,14 @@ def get_multi_labels(doc):
     """
     return [label for (token, postag, label) in doc]
 
-
+def write_file(filename, data):
+    with open(filename, 'w') as f:
+        for seq in data:
+            if len(seq) != len(' '.join(seq).split()):
+                print(seq)
+            assert len(seq) == len(' '.join(seq).split())
+            f.write(' '.join(seq))
+            f.write('\n')
 
 
 
@@ -214,6 +230,23 @@ if __name__ == '__main__':
             print('POS alignement warning, ', i)
         else:
             print('Sizing OK')
+
+    data = []
+    for i, (j,k) in enumerate(zip(hometags, postags)):
+        data.append([(w, k, label) for (w, label) in j])
+
+    X = [get_tokens(doc) for doc in data]
+    y = [get_multi_labels(doc) for doc in data]
+    # print(X[3], len(X[3]))
+    # print(y[3], len(y[3]))
+
+    # size = 0.2
+    # seed = 42
+    # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=size, random_state=seed)
+    
+    write_file('./data/task2.train.src', X)
+    write_file('./data/task2.train.tgt', y)
+    print("Done!")
 
 
 
