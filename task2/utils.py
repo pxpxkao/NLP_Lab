@@ -38,10 +38,10 @@ def make_causal_input(lod, map_, silent=True):
     for i in range(len(lod)):
         line_ = lod[i]['sentence']
         line = re.sub(rx, '', line_)
-        ante = lod[i]['cause']
-        ante = re.sub(rx, '', ante)
-        cons = lod[i]['effect']
-        cons = re.sub(rx, '', cons)
+        caus = lod[i]['cause']
+        caus = re.sub(rx, '', caus)
+        effe = lod[i]['effect']
+        effe = re.sub(rx, '', effe)
 
         silent or print(line)
         d = defaultdict(list)
@@ -57,49 +57,45 @@ def make_causal_input(lod, map_, silent=True):
 
         d_= defaultdict(list)
         for idx in d:
-
             d_[idx].append([tuple([d[idx][0][0], '_']), d[idx][0][1]])
 
-            def cut_space(init_t):
-                for s_idx, s in enumerate(line[init_t:]):
-                    if s != ' ':
-                        init_t += s_idx
-                        return init_t
+        # def cut_space(init_t):
+        #     for s_idx, s in enumerate(line[init_t:]):
+        #         if s != ' ':
+        #             init_t += s_idx
+        #             return init_t
 
-            init_a = cut_space(line.find(ante))
-            init_c = cut_space(line.find(cons))
+        # init_c = cut_space(line.find(caus))
+        # init_e = cut_space(line.find(effe))
+        init_c = line.find(caus)
+        init_e = line.find(effe)
 
-            for el in word_tokenize(ante):
-                start = line.find(el, init_a)
-                # print('start A')
-                # print(start)
-                # print(int(d_[idx][0][1]))
-                stop = line.find(el, init_a) + len(el)
-                word = line[start:stop]
-                #print(word)
-                if int(start) == int(d_[idx][0][1]):
+        for cl in word_tokenize(caus):
+            init_c = line.find(cl, init_c)
+            stop = line.find(cl, init_c) + len(cl)
+            word = line[init_c:stop]
+            for idx in d_:
+                if int(init_c) == int(d_[idx][0][1]):
                     und_ = defaultdict(list)
-                    und_[idx].append([tuple([word, 'C']), line.find(word, init_a)])
+                    und_[idx].append([tuple([cl, 'C']), line.find(cl, init_c)])
                     d_[idx] = und_[idx]
-                    break
-                init_a += len(word)
+                    
+            init_c += len(cl)
+            # print('increment_c', init_c)
 
 
-            for el in word_tokenize(cons):
-
-                start = line.find(el, init_c)
-                # print('start C')
-                # print(start)
-                # print(int(d_[idx][0][1]))
-                stop = line.find(el, init_c) + len(el)
-                word = line[start:stop]
-                #print(word)
-                if int(start) == int(d_[idx][0][1]):
+        for el in word_tokenize(effe):
+            init_e = line.find(el, init_e)
+            stop = line.find(el, init_e) + len(el)
+            word = line[init_e:stop]
+            #print(word)
+            for idx in d_:
+                if int(init_e) == int(d_[idx][0][1]):
                     und_ = defaultdict(list)
-                    und_[idx].append([tuple([word, 'E']), line.find(word, init_c)])
+                    und_[idx].append([tuple([el, 'E']), line.find(el, init_e)])
                     d_[idx] = und_[idx]
-                    break
-                init_c = cut_space(init_c+len(word))
+
+            init_e += len(el)
 
         dd[i].append(d_)
 
