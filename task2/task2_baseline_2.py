@@ -9,7 +9,6 @@ import pycrfsuite
 import os
 import pickle
 import nltk
-import csv
 
 # ------------------------------------------------------------------------------------ #
 #               This baseline uses nltk tokenizer and POS tagger                       #
@@ -34,7 +33,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--inrepo', type = str, default="data/fnp2020-fincausal-task2.csv", help= 'input repo')
+    parser.add_argument('--inrepo', type = str, default="./data/train.csv", help= 'input repo')
 
     parser.add_argument('--idx', type = str, default="baseline", help= 'experience index')
     # ------------------------------------------------------------------------------------ #
@@ -54,6 +53,7 @@ if __name__ == '__main__':
     # -------------------------------------------------------------------------------------#
 
     df = pd.read_csv(args.inrepo, delimiter=';', header=0)
+
     lodict_ = []
     for rows in df.itertuples():
         list_ = [rows[2], rows[3], rows[4]]
@@ -124,9 +124,9 @@ if __name__ == '__main__':
     # -------------------------------------------------------------------------------------#
 
     # The model will be saved to ./models when training is finished, with crf_args.idx.model name
-    if not os.path.exists('baseline/task2/models'):
-        os.makedirs("baseline/task2/models")
-    modelpath_ = os.path.join("baseline/task2/models", str(args.idx))
+    if not os.path.exists('models'):
+        os.makedirs("models")
+    modelpath_ = os.path.join("models", str(args.idx))
     if not os.path.exists(modelpath_):
         os.makedirs(modelpath_)
     trainer.train(os.path.join(modelpath_, ("crf_" + str(args.idx)) + ".model"))
@@ -134,9 +134,9 @@ if __name__ == '__main__':
     # The data will be dumped to ./models when training is finished, with data_args.idx.dat name
     data_list = [X_train, X_test, y_train, y_test]
 
-    if not os.path.exists('baseline/task2/data'):
-        os.makedirs("baseline/task2/data")
-    datapath_ = os.path.join("baseline/task2/data", str(args.idx))
+    if not os.path.exists('data'):
+        os.makedirs("data")
+    datapath_ = os.path.join("data", str(args.idx))
     if not os.path.exists(datapath_):
         os.makedirs(datapath_)
     pickle.dump(data_list, open(os.path.join(datapath_, ("data_" + str(args.idx)) + ".dat"), "wb"))
@@ -153,6 +153,10 @@ if __name__ == '__main__':
     # -------------------------------------------------------------------------------------#
 
     y_pred = [tagger.tag(xseq) for xseq in X_test]
+    with open('predictions.txt', 'w', encoding='utf-8') as f:
+        for row in y_pred:
+            f.write(' '.join(row))
+            f.write('\n')
     labels = {"C": 1, "E": 2, "_": 0}
 
     # Convert the sequences of tags into a 1-dimensional array
@@ -176,8 +180,6 @@ if __name__ == '__main__':
 
     F1metrics = precision_recall_fscore_support(truths, predictions, average='weighted')
     # print results and make tagged sentences
-    # Please note that simple rebuilding of the sentences from tags will create non meaningfull sentences most of the time,
-    # because of the model chosen (tokenizer)
     ll = []
     for i in range(len(X_test) - 1):
         l = defaultdict(list)
@@ -201,16 +203,7 @@ if __name__ == '__main__':
     print('F1score:', F1metrics[2])
     print('Precision: ', F1metrics[1])
     print('Recall: ', F1metrics[0])
-
-    print('exact match: ', len(nl) - sum([i["diverge"] for i in nl if i['diverge']==1]), 'over', len(nl), ' total sentences)')
-
-    fieldn = sorted(list(set(k for d in nl for k in d)))
-    with open(os.path.join(modelpath_, ("predictions_" + str(args.idx)) + ".csv"), "w+", encoding='utf-8') as f:
-        writer = csv.DictWriter(f, fieldnames=fieldn, delimiter="~")
-        writer.writeheader()
-        for line in nl:
-            writer.writerow(line)
-
+    print('exact match: ', sum([i["diverge"] for i in nl if i["diverge"] == 0]), 'over', len(nl), ' total sentences)')
 
     # # Print out other metrics
     print('************************ crf metrics ***************************', '\t')
@@ -241,3 +234,4 @@ if __name__ == '__main__':
 
     print("\nTop negative:")
     print_state_features(Counter(info.state_features).most_common()[-20:])
+

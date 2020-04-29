@@ -28,6 +28,7 @@ def make_causal_input(lod, map_, silent=True):
     :param map_: mapping of tags and values of interest, i.e. [('cause', 'C'), ('effect', 'E')]. The silent tags are by default taggerd as '_'
     :return: dict of list of tuples for each sentence
     """
+
     dd = defaultdict(list)
     dd_ = []
     rx = re.compile(r"(\b[-']\b)|[\W_]")
@@ -41,6 +42,7 @@ def make_causal_input(lod, map_, silent=True):
         effe = lod[i]['effect']
         effe = re.sub(rx, '', effe)
 
+        silent or print(line)
         d = defaultdict(list)
         index = 0
         for idx, w in enumerate(word_tokenize(line)):
@@ -48,54 +50,56 @@ def make_causal_input(lod, map_, silent=True):
 
             if not index == -1:
                 d[idx].append([w, index])
-                #print(w, index)
+                silent or print(w, index)
+
                 index += len(w)
 
-        d_ = defaultdict(list)
+        d_= defaultdict(list)
         for idx in d:
             d_[idx].append([tuple([d[idx][0][0], '_']), d[idx][0][1]])
 
-        init_e = line.find(effe)
-        init_c = line.find(caus)
+        # def cut_space(init_t):
+        #     for s_idx, s in enumerate(line[init_t:]):
+        #         if s != ' ':
+        #             init_t += s_idx
+        #             return init_t
 
-        for c, cl in enumerate(word_tokenize(caus)):
-            print('init_c', init_c)
+        # init_c = cut_space(line.find(caus))
+        # init_e = cut_space(line.find(effe))
+        init_c = line.find(caus)
+        init_e = line.find(effe)
+
+        for cl in word_tokenize(caus):
             init_c = line.find(cl, init_c)
-            print('start Cause', init_c)
             stop = line.find(cl, init_c) + len(cl)
             word = line[init_c:stop]
-            print('word', word.upper(), 'el', cl.upper())
-
             for idx in d_:
                 if int(init_c) == int(d_[idx][0][1]):
                     und_ = defaultdict(list)
                     und_[idx].append([tuple([cl, 'C']), line.find(cl, init_c)])
                     d_[idx] = und_[idx]
-
+                    
             init_c += len(cl)
-            print('increment_c', init_c)
+            # print('increment_c', init_c)
 
-        for e, el in enumerate(word_tokenize(effe)):
-            print('init_e', init_e)
+
+        for el in word_tokenize(effe):
             init_e = line.find(el, init_e)
-            print('start Effect', init_e)
             stop = line.find(el, init_e) + len(el)
             word = line[init_e:stop]
-            print('word', word.upper(), 'el', el.upper())
-
+            #print(word)
             for idx in d_:
                 if int(init_e) == int(d_[idx][0][1]):
                     und_ = defaultdict(list)
-                    und_[idx].append([tuple([word, 'E']), line.find(word, init_e)])
+                    und_[idx].append([tuple([el, 'E']), line.find(el, init_e)])
                     d_[idx] = und_[idx]
 
-            init_e += len(word)
-            print('init_e', init_e)
+            init_e += len(el)
 
         dd[i].append(d_)
 
-        for dict_ in dd:
-            dd_.append([item[0][0] for sub in [[j for j in i.values()] for i in lflatten(dd[dict_])] for item in sub])
+    for dict_ in dd:
+        dd_.append([item[0][0] for sub in [[j for j in i.values()] for i in lflatten(dd[dict_])] for item in sub])
 
     return dd_
 
@@ -210,3 +214,6 @@ if __name__ == '__main__':
             print('POS alignement warning, ', i)
         else:
             print('Sizing OK')
+
+
+
