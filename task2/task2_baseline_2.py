@@ -36,7 +36,7 @@ if __name__ == '__main__':
 
     parser.add_argument('--inrepo', type = str, default="./data/train.csv", help= 'input repo')
     parser.add_argument('--predrepo', type = str, default="./data/test_gold.csv", help= 'test repo')
-    parser.add_argument('--verbose', type = bool, default=True, help='print training')
+    parser.add_argument('--verbose', type = bool, default=False, help='print training')
 
     parser.add_argument('--idx', type = str, default="baseline", help= 'experience index')
     # ------------------------------------------------------------------------------------ #
@@ -97,7 +97,7 @@ if __name__ == '__main__':
     '''
 
     # Declare trainer
-    trainer = pycrfsuite.Trainer(verbose=True)
+    trainer = pycrfsuite.Trainer(verbose=args.verbose)
 
     # Submit training data to the trainer
     for xseq, yseq in zip(X_train, y_train):

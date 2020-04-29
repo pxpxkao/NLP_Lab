@@ -239,8 +239,8 @@ if __name__ == '__main__':
     X = [get_tokens(doc) for doc in data]
     y = [get_multi_labels(doc) for doc in data]
     
-    write_file('./data/task2.train.src', X)
-    write_file('./data/task2.train.tgt', y)
+    write_file('./data/task2.test.src', X)
+    write_file('./data/task2.test.tgt', y)
     print("Done!")
 
 

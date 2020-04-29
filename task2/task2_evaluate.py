@@ -6,7 +6,7 @@ from sklearn.preprocessing import MultiLabelBinarizer
 
 '''
 Usage:
-    python3 test_task2.py data/task2.val.tgt transformer/pred_dir/pred.txt
+    python3 task2_evaluate.py data/task2.val.tgt transformer/pred_dir/pred.txt
 Input file format:
     task2.val.tgt: E E E E E _ C C C C
     pred.txt: E E E E _ _ C C C C
