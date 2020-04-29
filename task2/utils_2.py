@@ -101,8 +101,8 @@ def make_causal_input(lod, map_, silent=True):
 
         dd[i].append(d_)
 
-    for dict_ in dd:
-        dd_.append([item[0][0] for sub in [[j for j in i.values()] for i in lflatten(dd[dict_])] for item in sub])
+        for dict_ in dd:
+            dd_.append([item[0][0] for sub in [[j for j in i.values()] for i in lflatten(dd[dict_])] for item in sub])
     return dd_
 
 def nltkPOS(loft):
