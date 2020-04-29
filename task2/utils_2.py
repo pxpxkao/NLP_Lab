@@ -101,9 +101,8 @@ def make_causal_input(lod, map_, silent=True):
 
         dd[i].append(d_)
 
-        for dict_ in dd:
-            dd_.append([item[0][0] for sub in [[j for j in i.values()] for i in lflatten(dd[dict_])] for item in sub])
-
+    for dict_ in dd:
+        dd_.append([item[0][0] for sub in [[j for j in i.values()] for i in lflatten(dd[dict_])] for item in sub])
     return dd_
 
 def nltkPOS(loft):
@@ -207,7 +206,7 @@ if __name__ == '__main__':
 
     import pandas as pd
 
-    df = pd.read_csv("./data/fnp2020-fincausal2-task2.csv", delimiter=';', header=0)
+    df = pd.read_csv("./data/test_gold.csv", delimiter=';', header=0)
 
     print(df.head())
     print(df.columns)
@@ -228,21 +227,17 @@ if __name__ == '__main__':
     for i, (j, k) in enumerate(zip(hometags, postags)):
         if len(j) != len(k):
             print('POS alignement warning, ', i)
+            pass
         else:
-            print('Sizing OK')
-
+            #print('Sizing OK')
+            pass
+    print(len(hometags), len(postags))
     data = []
-    for i, (j,k) in enumerate(zip(hometags, postags)):
-        data.append([(w, k, label) for (w, label) in j])
+    for i, (j, k) in enumerate(zip(hometags, postags)):
+        data.append([(w, pos, label) for (w, label), (word, pos) in zip(j, k)])
 
     X = [get_tokens(doc) for doc in data]
     y = [get_multi_labels(doc) for doc in data]
-    # print(X[3], len(X[3]))
-    # print(y[3], len(y[3]))
-
-    # size = 0.2
-    # seed = 42
-    # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=size, random_state=seed)
     
     write_file('./data/task2.train.src', X)
     write_file('./data/task2.train.tgt', y)
