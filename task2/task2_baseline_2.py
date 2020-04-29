@@ -162,8 +162,8 @@ if __name__ == '__main__':
 
     y_pred = [tagger.tag(xseq) for xseq in X_test]
     with open('predictions_tags.txt', 'w', encoding='utf-8') as f:
-        for pred, text in enumerate(y_pred, X_test_sent):
-            f.write(' '.join(text))
+        for pred, text in zip(y_pred, X_test_sent):
+            f.write(text)
             f.write('\n')
             f.write(' '.join(pred))
             f.write('\n')
