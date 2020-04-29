@@ -124,9 +124,9 @@ if __name__ == '__main__':
     # -------------------------------------------------------------------------------------#
 
     # The model will be saved to ./models when training is finished, with crf_args.idx.model name
-    if not os.path.exists('baseline/task2/models'):
-        os.makedirs("baseline/task2/models")
-    modelpath_ = os.path.join("baseline/task2/models", str(args.idx))
+    if not os.path.exists('models'):
+        os.makedirs("models")
+    modelpath_ = os.path.join("models", str(args.idx))
     if not os.path.exists(modelpath_):
         os.makedirs(modelpath_)
     trainer.train(os.path.join(modelpath_, ("crf_" + str(args.idx)) + ".model"))
@@ -134,9 +134,9 @@ if __name__ == '__main__':
     # The data will be dumped to ./models when training is finished, with data_args.idx.dat name
     data_list = [X_train, X_test, y_train, y_test]
 
-    if not os.path.exists('baseline/task2/data'):
-        os.makedirs("baseline/task2/data")
-    datapath_ = os.path.join("baseline/task2/data", str(args.idx))
+    if not os.path.exists('data'):
+        os.makedirs("data")
+    datapath_ = os.path.join("data", str(args.idx))
     if not os.path.exists(datapath_):
         os.makedirs(datapath_)
     pickle.dump(data_list, open(os.path.join(datapath_, ("data_" + str(args.idx)) + ".dat"), "wb"))
