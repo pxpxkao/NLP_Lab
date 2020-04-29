@@ -93,7 +93,7 @@ if __name__ == '__main__':
     n = 100
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=size, random_state=seed)
     X_train_sent, X_test_sent = train_test_split(sent, test_size=size, random_state=seed)
-    for yseq in y_test:
+    for yseq in y_train:
         print(yseq)
 
     # Declare trainer
