@@ -232,8 +232,7 @@ def evaluate(truth, predict, classes):
 
     precision, recall, f1, _ = metrics.precision_recall_fscore_support(y_truth, y_predict,
                                                                        labels=classes,
-                                                                       average='weighted',
-                                                                       )#zero_division=0
+                                                                       average='weighted')#zero_division=0
 
     logging.debug(f'SKLEARN EVAL: {f1}, {precision}, {recall}')
 
