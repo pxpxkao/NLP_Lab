@@ -118,7 +118,7 @@ def nltkPOS(loft):
         pos_ = list(nltk.pos_tag(tokens))
         su_pos.append(pos_)
 
-    return su_pos, tokons
+    return su_pos, tokens
 
 
 
