@@ -100,12 +100,14 @@ def post_process(pred):
 def is_equal_len(pred, ref):
     assert len(pred) == len(ref)
     for i in range(len(ref)):
+        if len(pred[i]) != len(ref[i]):
+            print(i, len(pred[i]), len(ref[i]))
         assert len(pred[i]) == len(ref[i])
     return True
 
 if __name__ == '__main__':
-    pred_file = 'pred_dir/pred_500.txt'
-    ref_file = '../data/task2.val.tgt'
+    pred_file = 'pred_dir/pred_200.txt'
+    ref_file = '../data/tags/task2.test.tgt'
     pred = read_file(pred_file)
     ref = read_file(ref_file)
     pred = post_process(pred)

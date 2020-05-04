@@ -142,4 +142,4 @@ class Solver():
                 f.write(labels)
                 f.write("\n")
                 sentence = self.data_utils.id2sent(batch['src'][i][:idx].long(), True)
-                print("id2sent len:", len(sentence.split()))
+                # print("id2sent len:", len(sentence.split()))
