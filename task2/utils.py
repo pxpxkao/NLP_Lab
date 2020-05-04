@@ -107,11 +107,11 @@ def make_causal_input(lod, map_, silent=True):
 
 def nltkPOS(loft):
 
-    su_pos = []
+    su_pos, tokens = [], []
     rx = re.compile(r"(\b[-']\b)|[\W_]")
     rxlist = [r'("\\)', r'(\\")']
     rx = re.compile('|'.join(rxlist))
-
+    
     for i, j in enumerate(loft):
         text = re.sub(rx, '', j)
         tokens = word_tokenize(text)
