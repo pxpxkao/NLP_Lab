@@ -32,7 +32,7 @@ def get_longest(line, tag):
     else:
         return None
 
-def post_process(pred, text, offset_2, offset_3):
+def post_process(pred, text):
     cause, effect = ['' for i in range(len(pred))], ['' for i in range(len(pred))]
     for idx, line in enumerate(pred):
         line = line.split()
@@ -56,20 +56,11 @@ if __name__ == '__main__':
     tag = readfile(args[2])
     n = 2
 
-    sub = pd.read_csv('data/test.csv',';')
-    sub = sub.astype({'Offset_Sentence2': pd.Int64Dtype(), 'Offset_Sentence3': pd.Int64Dtype()})
+    sub = pd.read_csv('data/task2.csv',';')
 
-    offset_2, offset_3 = sub.Offset_Sentence2, sub.Offset_Sentence3
-    cause, effect = post_process(tag, text, offset_2, offset_3)
-    # print('Index:\n\t', sub.Index[n])
-    # print('text:\n\t', text[n])
-    # print('tag:\n\t', tag[n])
-    # print('Cause:\n\t', cause[n])
-    # print('Effect:\n\t', effect[n])
+    cause, effect = post_process(tag, text)
 
-    sub = sub.drop(columns=['Offset_Sentence2', 'Offset_Sentence3'])
     sub['Cause'] = cause
     sub['Effect'] = effect
-    # print(sub.columns)
 
     sub.to_csv('task2_pred.csv', ';', index=0)
