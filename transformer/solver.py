@@ -14,7 +14,7 @@ class Solver():
         self.args = args
 
         self.data_utils = data_utils(args)
-        self.model = self.make_model(self.data_utils.vocab_size, N=6)
+        self.model = self.make_model(self.data_utils.vocab_size, N=4)
 
         self.model_dir = make_save_dir(args.model_dir)
 
