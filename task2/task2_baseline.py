@@ -86,7 +86,7 @@ if __name__ == '__main__':
         
         X = [extract_features(doc) for doc in data]
         if not train:
-            return X
+            return X, sent
         y = [get_multi_labels(doc) for doc in data]
         return X, y, sent
 
@@ -94,7 +94,7 @@ if __name__ == '__main__':
     #                              Make train and test sets                             #
     # ----------------------------------------------------------------------------------#
     X_train, y_train, X_train_sent = read_data(args.inrepo)
-    X_test = read_data(args.predrepo, False)
+    X_test, X_test_sent = read_data(args.predrepo, False)
     print('Length of Xtrain:', len(X_train))
     print('Length of Xtest:', len(X_test))
 
@@ -184,10 +184,10 @@ if __name__ == '__main__':
         for text in X_test_sent:
             f.write(text)
             f.write('\n')
-    with open('truth_tags.txt', 'w', encoding='utf-8') as f:
-        for truth in y_test:
-            f.write(' '.join(truth))
-            f.write('\n')
+    # with open('truth_tags.txt', 'w', encoding='utf-8') as f:
+    #     for truth in y_test:
+    #         f.write(' '.join(truth))
+    #         f.write('\n')
     labels = {"C": 1, "E": 2, "_": 0}
 
     # Convert the sequences of tags into a 1-dimensional array
