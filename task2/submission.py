@@ -1,3 +1,4 @@
+import os
 import sys
 args = sys.argv
 import pandas as pd
@@ -63,4 +64,6 @@ if __name__ == '__main__':
     sub['Cause'] = cause
     sub['Effect'] = effect
 
-    sub.to_csv('task2_pred.csv', ';', index=0)
+    if not os.path.exists('pred'):
+        os.makedirs('pred')
+    sub.to_csv('pred/task2.csv', ';', index=0)

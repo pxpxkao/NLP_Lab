@@ -46,9 +46,11 @@ class Solver():
 
         optim = torch.optim.Adam(self.model.parameters(), lr=1e-4, betas=(0.9, 0.98), eps=1e-9)
         total_loss = []
+        min_loss = 100000000000
         start = time.time()
         
-        for step in range(801):
+        # Train length: 1417
+        for step in range(1002):
             self.model.train()
             
             batch = data_yielder.__next__()
@@ -76,7 +78,7 @@ class Solver():
                 total_loss = []
                 print()
 
-            if step % 100 == 0:
+            if step % 50 == 0:
                 self.model.eval()
                 val_yielder = self.data_utils.data_yielder(self.args.valid_file, self.args.valid_tgt_file)
                 total_loss = []
@@ -89,17 +91,19 @@ class Solver():
                 print('=============================================')
                 print('Validation Result -> Loss : %6.6f' %(sum(total_loss)/len(total_loss)))
                 print('=============================================')
-                
-                print('Saving ' + str(step) + '_model.pth!\n')
-                model_name = str(step) + '_' + '%6.6f'%(sum(total_loss)/len(total_loss)) + 'model.pth'
-                state = {'step': step, 'state_dict': self.model.state_dict()}
+                if min_loss > (sum(total_loss)/len(total_loss)):
+                    min_loss = sum(total_loss)/len(total_loss)
+                    print('Saving ' + str(step) + '_model.pth!\n')
+                    model_name = str(step) + '_' + '%6.6f'%(sum(total_loss)/len(total_loss)) + 'model.pth'
+                    state = {'step': step, 'state_dict': self.model.state_dict()}
 
-                torch.save(state, os.path.join(self.model_dir, model_name))
+                    torch.save(state, os.path.join(self.model_dir, model_name))
+                else:
+                    print('Valid Loss:', '%6.6f'%(sum(total_loss)/len(total_loss)), 'did not decrease')
 
     def _test(self):
         #prepare model
         path = self.args.load_model
-        max_len = 50
         state_dict = torch.load(path)['state_dict']
         model = self.model
         model.load_state_dict(state_dict)
@@ -108,7 +112,6 @@ class Solver():
 
         #start decoding
         data_yielder = self.data_utils.data_yielder(self.args.test_file, self.args.test_tgt_file)
-        total_loss = []
         start = time.time()
 
         #file
@@ -116,7 +119,12 @@ class Solver():
 
         self.model.eval()
 
+        step = 0
         for batch in data_yielder:
+            step+=1
+            if step % 100 == 0:
+                print(time.time() - start, '. Finished testing on step', step)
+                start = time.time()
             #print(batch['src'].data.size())
             out = self.model.forward(batch['src'].long(), batch['src_mask'])
             
@@ -127,7 +135,9 @@ class Solver():
                 nonz = torch.nonzero(batch['src_mask'][i])
                 # print(nonz)
                 idx = nonz[-1][1].item()+1
-                sentence = self.data_utils.id2label(out[i][:idx], True)
+                labels = self.data_utils.id2label(out[i][:idx], True)
                 #print(l[1:])
-                f.write(sentence)
+                f.write(labels)
                 f.write("\n")
+                sentence = self.data_utils.id2sent(batch['src'][i][:idx].long(), True)
+                print("id2sent len:", len(sentence.split()))

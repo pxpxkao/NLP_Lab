@@ -34,7 +34,14 @@ def transfer(filename, mode):
 
     X = np.array([get_tokens(doc) for doc in data])
     y = np.array([get_multi_labels(doc) for doc in data])
+    step = 0
+    for (key, idxs) in multi_.items():
+        print(key, idxs)
+        for i, idx in enumerate(idxs):
+            X[idx] = ['[SEP'+str(i)+']'] + X[idx]
+            y[idx] = ['_'] + y[idx]
 
+    '''
     mask = np.ones(len(X), dtype=bool)
     for (key, idx) in multi_.items():
         print(key, idx)
@@ -55,17 +62,23 @@ def transfer(filename, mode):
 
     X = X[mask]
     y = y[mask]
-
+    '''
     if mode == 'train':
-        # split into train, dev
-        size = 0.2
-        seed = 42
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=size, random_state=seed)
+        # split into train, dev, test
+        size = 0.1
+        # seed = 42
+        X, X_test, y, y_test = train_test_split(X, y, test_size=size, shuffle=False)
+        write_file(os.path.join(data_dir, 'task2.test.src'), X_test)
+        write_file(os.path.join(data_dir, 'task2.test.tgt'), y_test)
 
+        X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=size, shuffle=False)
         write_file(os.path.join(data_dir, 'task2.train.src'), X_train)
         write_file(os.path.join(data_dir, 'task2.train.tgt'), y_train)
-        write_file(os.path.join(data_dir, 'task2.val.src'), X_test)
-        write_file(os.path.join(data_dir, 'task2.val.tgt'), y_test)
+        write_file(os.path.join(data_dir, 'task2.val.src'), X_val)
+        write_file(os.path.join(data_dir, 'task2.val.tgt'), y_val)
+        print('Length of Xtrain:', len(X_train))
+        print('Length of Xval:', len(X_val))
+        print('Length of Xtest:', len(X_test))
         print("Done!")
 
     elif mode == 'test':
@@ -77,4 +90,4 @@ def transfer(filename, mode):
 
 if __name__ == '__main__':
     transfer('train.csv', 'train')
-    transfer('test_gold.csv', 'test')
+    # transfer('test_gold.csv', 'test')
