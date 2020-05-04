@@ -192,8 +192,8 @@ if __name__ == '__main__':
 
     # Convert the sequences of tags into a 1-dimensional array
     predictions = np.array([labels[tag] for row in y_pred for tag in row])
-    truths = np.array([labels[tag] for row in y_test for tag in row])
-    print(np.sum(truths == predictions) / len(truths))
+    # truths = np.array([labels[tag] for row in y_test for tag in row])
+    # print(np.sum(truths == predictions) / len(truths))
 
 '''
     # --------------------------------------------------------------------------------- #
