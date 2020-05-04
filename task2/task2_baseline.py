@@ -54,28 +54,39 @@ if __name__ == '__main__':
     # --------------------------------------------------------------------------------- #
     #                                     Make data                                     #
     # ----------------------------------------------------------------------------------#
-    def read_data(filename):
+    def read_data(filename, train=True):
         df = pd.read_csv(filename, delimiter=';', header=0)
 
         lodict_ = []
         for rows in df.itertuples():
-            list_ = [rows[2], rows[3], rows[4]]
-            map1 = ['sentence', 'cause', 'effect']
+            if train:
+                list_ = [rows[2], rows[3], rows[4]]
+                map1 = ['sentence', 'cause', 'effect']
+            else:
+                list_ = [rows[2]]
+                map1 = ['sentence']
             dict_ = s2dict(list_, map1)
             lodict_.append(dict_)
 
         print('transformation example: ', lodict_[1])
 
-        map_ = [('cause', 'C'), ('effect', 'E')]
-        hometags = make_causal_input(lodict_, map_)
+        if train:
+            map_ = [('cause', 'C'), ('effect', 'E')]
+            hometags = make_causal_input(lodict_, map_)
         postags = nltkPOS([i['sentence'] for i in lodict_])
         sent = [i['sentence'] for i in lodict_]
 
         data = []
-        for i, (j, k) in enumerate(zip(hometags, postags)):
-            data.append([(w, pos, label) for (w, label), (word, pos) in zip(j, k)])
-
+        if train:
+            for i, (j, k) in enumerate(zip(hometags, postags)):
+                data.append([(w, pos, label) for (w, label), (word, pos) in zip(j, k)])
+        else:
+            for j in postags:
+                data.append([(w, pos) for (w, pos) in j])
+        
         X = [extract_features(doc) for doc in data]
+        if train:
+            return X
         y = [get_multi_labels(doc) for doc in data]
         return X, y, sent
 
@@ -83,10 +94,11 @@ if __name__ == '__main__':
     #                              Make train and test sets                             #
     # ----------------------------------------------------------------------------------#
     X_train, y_train, X_train_sent = read_data(args.inrepo)
-    X_test, y_test, X_test_sent = read_data(args.predrepo)
+    X_test = read_data(args.predrepo, False)
     print('Length of Xtrain:', len(X_train))
     print('Length of Xtest:', len(X_test))
 
+    
     '''
     X, y, sent = read_data(args.inrepo)
     size = 0.2
