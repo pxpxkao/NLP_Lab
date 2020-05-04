@@ -85,7 +85,7 @@ if __name__ == '__main__':
                 data.append([(w, pos) for (w, pos) in j])
         
         X = [extract_features(doc) for doc in data]
-        if train:
+        if not train:
             return X
         y = [get_multi_labels(doc) for doc in data]
         return X, y, sent
