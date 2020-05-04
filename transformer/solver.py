@@ -46,7 +46,7 @@ class Solver():
 
         optim = torch.optim.Adam(self.model.parameters(), lr=1e-4, betas=(0.9, 0.98), eps=1e-9)
         total_loss = []
-        min_loss = 100000000000
+        best, min_loss = 0, 100000000000
         start = time.time()
         
         # Train length: 1417
@@ -93,13 +93,15 @@ class Solver():
                 print('=============================================')
                 if min_loss > (sum(total_loss)/len(total_loss)):
                     min_loss = sum(total_loss)/len(total_loss)
+                    best = step
                     print('Saving ' + str(step) + '_model.pth!\n')
                     model_name = str(step) + '_' + '%6.6f'%(sum(total_loss)/len(total_loss)) + 'model.pth'
                     state = {'step': step, 'state_dict': self.model.state_dict()}
 
                     torch.save(state, os.path.join(self.model_dir, model_name))
                 else:
-                    print('Valid Loss:', '%6.6f'%(sum(total_loss)/len(total_loss)), 'did not decrease')
+                    print('Valid Loss: %6.6f, did not decrease'%(sum(total_loss)/len(total_loss)))
+        print('Best Validation on step %d, Loss = %6.6f'%(best, min_loss))
 
     def _test(self):
         #prepare model

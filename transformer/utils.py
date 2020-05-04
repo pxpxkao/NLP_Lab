@@ -59,9 +59,10 @@ def make_dict(max_num, dict_path, train_path):
     word2id['__UNK__'] = len(word2id)
     if len(word_count) < max_num:
         max_num = len(word_count)
+        print('max_num', max_num)
     word_count_list = sorted(word_count.items(), key=operator.itemgetter(1))
+    print(word_count_list[-max_num][1])
     for item in word_count_list[-(max_num*2):][::-1]:
-        
         if item[1] < word_count_list[-max_num][1]:
             continue
         word = item[0]
