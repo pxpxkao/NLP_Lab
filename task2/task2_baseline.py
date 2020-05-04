@@ -155,7 +155,7 @@ if __name__ == '__main__':
     trainer.train(os.path.join(modelpath_, ("crf_" + str(args.idx)) + ".model"))
 
     # The data will be dumped to ./models when training is finished, with data_args.idx.dat name
-    data_list = [X_train, X_test, y_train, y_test]
+    data_list = [X_train, X_test, y_train]
 
     if not os.path.exists('data'):
         os.makedirs("data")
