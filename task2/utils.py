@@ -107,7 +107,7 @@ def make_causal_input(lod, map_, silent=True):
 
 def nltkPOS(loft):
 
-    su_pos, tokens = [], []
+    su_pos = []
     rx = re.compile(r"(\b[-']\b)|[\W_]")
     rxlist = [r'("\\)', r'(\\")']
     rx = re.compile('|'.join(rxlist))
@@ -118,7 +118,7 @@ def nltkPOS(loft):
         pos_ = list(nltk.pos_tag(tokens))
         su_pos.append(pos_)
 
-    return su_pos, tokens
+    return su_pos
 
 
 
