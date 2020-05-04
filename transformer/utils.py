@@ -140,7 +140,7 @@ class data_utils():
 
     def data_yielder(self, src_file, tgt_file, num_epoch = 1):
         batch = {'src':[],'src_mask':[],'y':[]}
-        seq_length = 200
+        seq_length = 250
         for epo in range(num_epoch):
             start_time = time.time()
             print("start epo %d" % (epo))
