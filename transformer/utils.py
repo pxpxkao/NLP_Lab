@@ -172,7 +172,7 @@ class data_utils():
             sent.append(self.index2word[index])
             word_dict[index] = 1
         print("id2set len:", len(sent))
-        return ' '.join(sent).encode('utf-8')
+        return ' '.join(sent)
     
     def id2label(self, indices, test=False):
         sent = []
@@ -183,7 +183,7 @@ class data_utils():
             sent.append(self.index2label[index])
         if test:
             print("id2label len:", len(sent))
-        return ' '.join(sent).encode('utf-8')
+        return ' '.join(sent)
 
     def subsequent_mask(self, vec):
         attn_shape = (vec.shape[-1], vec.shape[-1])

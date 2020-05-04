@@ -14,7 +14,7 @@ class Solver():
         self.args = args
 
         self.data_utils = data_utils(args)
-        self.model = self.make_model(self.data_utils.vocab_size, N=4)
+        self.model = self.make_model(self.data_utils.vocab_size, N=6)
 
         self.model_dir = make_save_dir(args.model_dir)
 
@@ -70,7 +70,7 @@ class Solver():
                 elapsed = time.time() - start
                 print("Epoch Step: %d Loss: %f Time: %f" %
                         (step, np.mean(total_loss), elapsed))
-                print('src:',self.data_utils.id2sent(gg[0][:50]))
+                print('src:',self.data_utils.id2sent(gg[0][:50]).encode('utf-8'))
                 print('tgt:',self.data_utils.id2label(yy[0][:50]))
                 print('pred:',self.data_utils.id2label(pred[0][:50]))
 
