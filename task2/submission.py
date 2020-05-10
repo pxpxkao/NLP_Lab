@@ -57,7 +57,7 @@ if __name__ == '__main__':
     tag = readfile(args[2])
     n = 2
 
-    sub = pd.read_csv('data/task2.csv',';')
+    sub = pd.read_csv('data/train_test.csv',';')
 
     cause, effect = post_process(tag, text)
 
@@ -66,4 +66,4 @@ if __name__ == '__main__':
 
     if not os.path.exists('pred'):
         os.makedirs('pred')
-    sub.to_csv('pred/task2.csv', ';', index=0)
+    sub.to_csv('pred/task2_test.csv', ';', index=0)

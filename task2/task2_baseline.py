@@ -35,7 +35,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
     parser.add_argument('--inrepo', type = str, default="./data/train.csv", help= 'input repo')
-    parser.add_argument('--predrepo', type = str, default="./data/task2.csv", help= 'test repo')
+    parser.add_argument('--predrepo', type = str, default="./data/train_test_gold.csv", help= 'test repo')
     parser.add_argument('--verbose', type = bool, default=False, help='print training')
 
     parser.add_argument('--idx', type = str, default="baseline", help= 'experience index')
@@ -93,12 +93,12 @@ if __name__ == '__main__':
     # --------------------------------------------------------------------------------- #
     #                              Make train and test sets                             #
     # ----------------------------------------------------------------------------------#
+    
     X_train, y_train, X_train_sent = read_data(args.inrepo)
-    X_test, X_test_sent = read_data(args.predrepo, False)
+    # X_test, X_test_sent = read_data(args.predrepo, False)
+    X_test, y_test, X_test_sent = read_data(args.predrepo)
     print('Length of Xtrain:', len(X_train))
     print('Length of Xtest:', len(X_test))
-
-    
     '''
     X, y, sent = read_data(args.inrepo)
     size = 0.2
@@ -192,10 +192,10 @@ if __name__ == '__main__':
 
     # Convert the sequences of tags into a 1-dimensional array
     predictions = np.array([labels[tag] for row in y_pred for tag in row])
-    # truths = np.array([labels[tag] for row in y_test for tag in row])
-    # print(np.sum(truths == predictions) / len(truths))
+    truths = np.array([labels[tag] for row in y_test for tag in row])
+    print(np.sum(truths == predictions) / len(truths))
 
-'''
+
     # --------------------------------------------------------------------------------- #
     #                                  Print metrics                                    #
     # ----------------------------------------------------------------------------------#
@@ -235,7 +235,7 @@ if __name__ == '__main__':
     print('Precision: ', F1metrics[1])
     print('Recall: ', F1metrics[0])
     print('exact match: ', len(nl) - sum([i["diverge"] for i in nl if i['diverge']==1]), 'over', len(nl), ' total sentences)')
-
+'''
     fieldn = sorted(list(set(k for d in nl for k in d)))
     with open(os.path.join(modelpath_, ("predictions_" + str(args.idx)) + ".csv"), "w+", encoding='utf-8') as f:
         writer = csv.DictWriter(f, fieldnames=fieldn, delimiter="~")
