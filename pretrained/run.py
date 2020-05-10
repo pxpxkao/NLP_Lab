@@ -281,7 +281,7 @@ def main():
                 writer.write(" ".join(line)+'\n')
             with open(os.path.join(data_args.data_dir, "task2.test.tgt"), "r") as f:
                 for idx, line in enumerate(f):
-                    if len(line.split()) != len(preds_list[idx])
+                    if len(line.split()) != len(preds_list[idx]):
                         logger.warning("Maximum sequence length exceeded: No prediction for '%d' of '%d'.",idx,  len(preds_list))
 
     return results
