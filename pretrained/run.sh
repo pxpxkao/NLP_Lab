@@ -13,7 +13,7 @@ export BERT_MODEL=bert-large-cased
 # cat train.txt dev.txt test.txt | cut -d " " -f 2 | grep -v "^$"| sort | uniq > labels.txt
 export DATA_DIR=../data/tags
 export OUTPUT_DIR=bert-large-model
-export BATCH_SIZE=4
+export BATCH_SIZE=2
 export NUM_EPOCHS=1
 export SAVE_STEPS=750
 export SEED=1
