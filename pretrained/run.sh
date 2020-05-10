@@ -13,7 +13,7 @@ export BERT_MODEL=bert-base-cased
 # cat train.txt dev.txt test.txt | cut -d " " -f 2 | grep -v "^$"| sort | uniq > labels.txt
 export DATA_DIR=../data/tags
 export OUTPUT_DIR=bert-model
-export BATCH_SIZE=32
+export BATCH_SIZE=16
 export NUM_EPOCHS=3
 export SAVE_STEPS=750
 export SEED=1
