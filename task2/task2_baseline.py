@@ -176,6 +176,7 @@ if __name__ == '__main__':
     # ----------------------------------------------------------------------------------#
 
     y_pred = [tagger.tag(xseq) for xseq in X_test]
+    print(len(y_pred))
     with open('predictions_tags.txt', 'w', encoding='utf-8') as f:
         for pred in y_pred:
             f.write(' '.join(pred))
@@ -184,10 +185,10 @@ if __name__ == '__main__':
         for text in X_test_sent:
             f.write(text)
             f.write('\n')
-    # with open('truth_tags.txt', 'w', encoding='utf-8') as f:
-    #     for truth in y_test:
-    #         f.write(' '.join(truth))
-    #         f.write('\n')
+    with open('truth_tags.txt', 'w', encoding='utf-8') as f:
+        for truth in y_test:
+            f.write(' '.join(truth))
+            f.write('\n')
     labels = {"C": 1, "E": 2, "_": 0}
 
     # Convert the sequences of tags into a 1-dimensional array
@@ -212,7 +213,7 @@ if __name__ == '__main__':
     F1metrics = precision_recall_fscore_support(truths, predictions, average='weighted')
     # print results and make tagged sentences
     ll = []
-    for i in range(len(X_test) - 1):
+    for i in range(len(X_test)):
         l = defaultdict(list)
         for j, (y, x) in enumerate(zip(y_pred[i], list(zip(*[[v for k, v in x.items()] for x in X_test[i]]))[1])):
             l.update({x: y})
