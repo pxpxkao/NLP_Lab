@@ -14,7 +14,7 @@ export BERT_MODEL=roberta-base
 export DATA_DIR=data
 export OUTPUT_DIR=roberta-base-model
 export BATCH_SIZE=8
-export NUM_EPOCHS=1
+export NUM_EPOCHS=3
 export SAVE_STEPS=750
 export SEED=1
 
