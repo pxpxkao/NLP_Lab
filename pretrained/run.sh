@@ -18,7 +18,7 @@ export NUM_EPOCHS=3
 export SAVE_STEPS=750
 export SEED=1
 
-python3 run_ner.py \
+python3 run.py \
 --data_dir $DATA_DIR \
 --labels $DATA_DIR/labels.txt \
 --model_name_or_path $BERT_MODEL \
