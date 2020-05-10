@@ -39,7 +39,7 @@ def transfer(filename, mode, save='flat'):
     for (key, idxs) in multi_.items():
         print(key, idxs)
         for i, idx in enumerate(idxs):
-            X[idx] = ['[SEP'+str(i)+']'] + X[idx]
+            X[idx] = [str(i)] + X[idx]
             y[idx] = ['_'] + y[idx]
 
     '''
@@ -97,5 +97,5 @@ def transfer(filename, mode, save='flat'):
         print('No such mode!')
 
 if __name__ == '__main__':
-    transfer('train.csv', 'train', 'line')
+    transfer('train.csv', 'train', 'flat')
     # transfer('test_gold.csv', 'test')
