@@ -34,7 +34,12 @@ def transfer(filename, mode):
 
     X = np.array([get_tokens(doc) for doc in data])
     y = np.array([get_multi_labels(doc) for doc in data])
-
+    # for (key, idxs) in multi_.items():
+    #     print(key, idxs)
+    #     for i, idx in enumerate(idxs):
+    #         X[idx] = [str(i)] + X[idx]
+    #         y[idx] = ['_'] + y[idx]
+    '''
     mask = np.ones(len(X), dtype=bool)
     for (key, idx) in multi_.items():
         print(key, idx)
@@ -55,7 +60,7 @@ def transfer(filename, mode):
 
     X = X[mask]
     y = y[mask]
-
+    '''
     if mode == 'train':
         # split into train, dev
         size = 0.2
