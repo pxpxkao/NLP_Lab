@@ -275,8 +275,9 @@ def main():
 
         # Save predictions
         output_test_predictions_file = os.path.join(training_args.output_dir, "test_predictions.txt")
+        print(preds_list[0])
         with open(output_test_predictions_file, "w") as writer:
-            with open(os.path.join(data_args.data_dir, "test.txt"), "r") as f:
+            with open(os.path.join(data_args.data_dir, "task2.test.txt"), "r") as f:
                 example_id = 0
                 for line in f:
                     if line.startswith("-DOCSTART-") or line == "" or line == "\n":
