@@ -275,20 +275,14 @@ def main():
 
         # Save predictions
         output_test_predictions_file = os.path.join(training_args.output_dir, "test_predictions.txt")
-        print(preds_list[0])
-        with open(output_test_predictions_file, "w") as writer:
-            with open(os.path.join(data_args.data_dir, "task2.test.txt"), "r") as f:
-                example_id = 0
-                for line in f:
-                    if line.startswith("-DOCSTART-") or line == "" or line == "\n":
-                        writer.write(line)
-                        if not preds_list[example_id]:
-                            example_id += 1
-                    elif preds_list[example_id]:
-                        output_line = line.split()[0] + " " + preds_list[example_id].pop(0) + "\n"
-                        writer.write(output_line)
-                    else:
-                        logger.warning("Maximum sequence length exceeded: No prediction for '%s'.", line.split()[0])
+        print(len(preds_list))
+        with open(output_test_predictions_file, "w", encoding='utf-8') as writer:
+            for line in preds_list:
+                writer.write(" ".join(line)+'\n')
+            with open(os.path.join(data_args.data_dir, "task2.test.tgt"), "r") as f:
+                for idx, line in enumerate(f):
+                    if len(line.split()) != len(preds_list[idx])
+                        logger.warning("Maximum sequence length exceeded: No prediction for '%d' of '%d'.",idx,  len(preds_list))
 
     return results
 
