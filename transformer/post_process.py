@@ -1,3 +1,4 @@
+import sys
 import numpy as np
 from sklearn.metrics import classification_report, precision_recall_fscore_support
 labels = {"C": 1, "E": 2, "_": 0}
@@ -106,7 +107,8 @@ def is_equal_len(pred, ref):
     return True
 
 if __name__ == '__main__':
-    pred_file = 'pred_dir/pred_200.txt'
+    filename = sys.argv[1]
+    pred_file = filename # 'pred_dir/pred_200.txt'
     ref_file = '../data/tags/task2.test.tgt'
     pred = read_file(pred_file)
     ref = read_file(ref_file)
