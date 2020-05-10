@@ -355,6 +355,8 @@ def convert_examples_to_features(
 
         if len(input_ids) != max_seq_length:
             print('error:', input_ids)
+            print(padding_length)
+            print(max_seq_length)
         assert len(input_ids) == max_seq_length
         assert len(input_mask) == max_seq_length
         assert len(segment_ids) == max_seq_length
