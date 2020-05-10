@@ -6,7 +6,7 @@
 # | grep -v "^#" | cut -f 2,3 | tr '\t' ' ' > test.txt.tmp
 # wget "https://raw.githubusercontent.com/stefan-it/fine-tuned-berts-seq/master/scripts/preprocess.py"
 export MAX_LENGTH=256
-export BERT_MODEL=roberta-base-cased
+export BERT_MODEL=roberta-base
 # python3 preprocess.py train.txt.tmp $BERT_MODEL $MAX_LENGTH > train.txt
 # python3 preprocess.py dev.txt.tmp $BERT_MODEL $MAX_LENGTH > dev.txt
 # python3 preprocess.py test.txt.tmp $BERT_MODEL $MAX_LENGTH > test.txt
