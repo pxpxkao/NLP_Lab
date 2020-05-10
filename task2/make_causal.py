@@ -145,6 +145,13 @@ def write_file(filename, data):
             assert len(seq) == len(' '.join(seq).split())
             f.write(' '.join(seq))
             f.write('\n')
+def write_file_line(filename, X, Y):
+    with open(filename, 'w') as f:
+        for x, y in zip(X, Y):
+            assert len(x) == len(y)
+            for i in range(len(x)):
+                f.write(x[i] + ' ' + y[i] + '\n')
+            f.write('\n')
 
 if __name__ == '__main__':
     # -------------------------------------------------------------------------------- #

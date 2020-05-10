@@ -1,11 +1,12 @@
 import os
 data_dir = 'data'
+output_dir = '../data/tags'
 import pandas as pd
 import numpy as np
 from make_causal import *
 from sklearn.model_selection import train_test_split
 
-def transfer(filename, mode):
+def transfer(filename, mode, save='flat'):
     print(filename)
     ################## Make transformer format data #######################
     df = pd.read_csv(os.path.join(data_dir, filename), delimiter=';')
@@ -68,26 +69,33 @@ def transfer(filename, mode):
         size = 0.1
         # seed = 42
         X, X_test, y, y_test = train_test_split(X, y, test_size=size, shuffle=False)
-        write_file(os.path.join(data_dir, 'task2.test.src'), X_test)
-        write_file(os.path.join(data_dir, 'task2.test.tgt'), y_test)
+        if save == 'flat':
+            write_file(os.path.join(output_dir, 'task2.test.src'), X_test)
+            write_file(os.path.join(output_dir, 'task2.test.tgt'), y_test)
+        elif save == 'line':
+            write_file_line(os.path.join(output_dir, 'task2.test.txt'), X_test, y_test)
 
         X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=size, shuffle=False)
-        write_file(os.path.join(data_dir, 'task2.train.src'), X_train)
-        write_file(os.path.join(data_dir, 'task2.train.tgt'), y_train)
-        write_file(os.path.join(data_dir, 'task2.val.src'), X_val)
-        write_file(os.path.join(data_dir, 'task2.val.tgt'), y_val)
+        if save == 'flat':
+            write_file(os.path.join(output_dir, 'task2.train.src'), X_train)
+            write_file(os.path.join(output_dir, 'task2.train.tgt'), y_train)
+            write_file(os.path.join(output_dir, 'task2.val.src'), X_val)
+            write_file(os.path.join(output_dir, 'task2.val.tgt'), y_val)
+        elif save == 'line':
+            write_file_line(os.path.join(output_dir, 'task2.train.txt'), X_train, y_train)
+            write_file_line(os.path.join(output_dir, 'task2.val.txt'), X_val, y_val)
         print('Length of Xtrain:', len(X_train))
         print('Length of Xval:', len(X_val))
         print('Length of Xtest:', len(X_test))
         print("Done!")
 
     elif mode == 'test':
-        write_file(os.path.join(data_dir, 'task2.test.src'), X)
-        write_file(os.path.join(data_dir, 'task2.test.tgt'), y)
+        write_file(os.path.join(output_dir, 'task2.test.src'), X)
+        write_file(os.path.join(output_dir, 'task2.test.tgt'), y)
         print("Done!")
     else:
         print('No such mode!')
 
 if __name__ == '__main__':
-    transfer('train.csv', 'train')
+    transfer('train.csv', 'train', 'line')
     # transfer('test_gold.csv', 'test')
