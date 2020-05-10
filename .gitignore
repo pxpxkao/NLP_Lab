@@ -2,3 +2,4 @@
 transformer/pred_dir
 transformer/train_model
 __pycache__
+pretrained/model
