@@ -1361,9 +1361,9 @@ class BertForTokenClassification(BertPreTrainedModel):
                     active_loss, labels.view(-1), torch.tensor(loss_fct.ignore_index).type_as(labels)
                 )
                 loss = loss_fct(active_logits, active_labels)
-                print('active_loss:', active_loss.size())
-                print('active_logits:', active_logits.size())
-                print('active_labels:', active_labels.size())
+                print('active_loss:\n', active_loss)
+                print('active_logits:\n', active_logits)
+                print('active_labels:\n', active_labels)
             else:
                 print("No attention mask!")
                 loss = loss_fct(logits.view(-1, self.num_labels), labels.view(-1))
